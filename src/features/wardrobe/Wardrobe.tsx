@@ -3,7 +3,7 @@ import Tela from '../../shared/Tela'
 import { listarPecas, removerPeca, salvarPeca } from '../../shared/storage'
 import { CATEGORIAS, type Categoria, type Peca } from '../../shared/types'
 import FormPeca from './FormPeca'
-import FotoPeca from './FotoPeca'
+import FotoPeca from '../../shared/FotoPeca'
 
 export default function Wardrobe() {
   const [pecas, setPecas] = useState<Peca[]>([])
