@@ -47,3 +47,9 @@ export type Medidas = {
 }
 
 export const CORES_NEUTRAS: readonly Cor[] = ['preto', 'branco', 'cinza', 'bege', 'marrom', 'azul-marinho']
+
+export type TamanhoMarca = {
+  id: string
+  marca: string
+  tamanho: string
+}

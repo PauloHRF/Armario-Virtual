@@ -1,0 +1,40 @@
+{
+  "aviso": "Valores ILUSTRATIVOS, digitados à mão para a demonstração. Substituir pelas tabelas oficiais de cada loja antes de usar de verdade. Cada faixa vale até o valor 'ate' (exclusivo), em cm.",
+  "lojas": [
+    {
+      "id": "renner",
+      "nome": "Renner",
+      "camiseta": [{ "tamanho": "P", "ate": 92 }, { "tamanho": "M", "ate": 100 }, { "tamanho": "G", "ate": 108 }, { "tamanho": "GG", "ate": 116 }],
+      "calca": [{ "tamanho": "38", "ate": 77 }, { "tamanho": "40", "ate": 82 }, { "tamanho": "42", "ate": 87 }, { "tamanho": "44", "ate": 92 }, { "tamanho": "46", "ate": 97 }, { "tamanho": "48", "ate": 102 }],
+      "calcado": [{ "tamanho": "38", "ate": 25.0 }, { "tamanho": "39", "ate": 25.7 }, { "tamanho": "40", "ate": 26.3 }, { "tamanho": "41", "ate": 27.0 }, { "tamanho": "42", "ate": 27.7 }, { "tamanho": "43", "ate": 28.3 }, { "tamanho": "44", "ate": 29.0 }]
+    },
+    {
+      "id": "cea",
+      "nome": "C&A",
+      "camiseta": [{ "tamanho": "P", "ate": 90 }, { "tamanho": "M", "ate": 98 }, { "tamanho": "G", "ate": 106 }, { "tamanho": "GG", "ate": 114 }],
+      "calca": [{ "tamanho": "38", "ate": 76 }, { "tamanho": "40", "ate": 81 }, { "tamanho": "42", "ate": 86 }, { "tamanho": "44", "ate": 91 }, { "tamanho": "46", "ate": 96 }, { "tamanho": "48", "ate": 101 }],
+      "calcado": [{ "tamanho": "38", "ate": 24.9 }, { "tamanho": "39", "ate": 25.6 }, { "tamanho": "40", "ate": 26.2 }, { "tamanho": "41", "ate": 26.9 }, { "tamanho": "42", "ate": 27.6 }, { "tamanho": "43", "ate": 28.2 }, { "tamanho": "44", "ate": 28.9 }]
+    },
+    {
+      "id": "riachuelo",
+      "nome": "Riachuelo",
+      "camiseta": [{ "tamanho": "P", "ate": 94 }, { "tamanho": "M", "ate": 102 }, { "tamanho": "G", "ate": 110 }, { "tamanho": "GG", "ate": 118 }],
+      "calca": [{ "tamanho": "38", "ate": 78 }, { "tamanho": "40", "ate": 83 }, { "tamanho": "42", "ate": 88 }, { "tamanho": "44", "ate": 93 }, { "tamanho": "46", "ate": 98 }, { "tamanho": "48", "ate": 103 }],
+      "calcado": [{ "tamanho": "38", "ate": 25.1 }, { "tamanho": "39", "ate": 25.8 }, { "tamanho": "40", "ate": 26.4 }, { "tamanho": "41", "ate": 27.1 }, { "tamanho": "42", "ate": 27.8 }, { "tamanho": "43", "ate": 28.4 }, { "tamanho": "44", "ate": 29.1 }]
+    },
+    {
+      "id": "hering",
+      "nome": "Hering",
+      "camiseta": [{ "tamanho": "P", "ate": 91 }, { "tamanho": "M", "ate": 99 }, { "tamanho": "G", "ate": 107 }, { "tamanho": "GG", "ate": 115 }],
+      "calca": [{ "tamanho": "38", "ate": 77 }, { "tamanho": "40", "ate": 82 }, { "tamanho": "42", "ate": 87 }, { "tamanho": "44", "ate": 92 }, { "tamanho": "46", "ate": 97 }, { "tamanho": "48", "ate": 102 }],
+      "calcado": []
+    },
+    {
+      "id": "zara",
+      "nome": "Zara",
+      "camiseta": [{ "tamanho": "S", "ate": 94 }, { "tamanho": "M", "ate": 100 }, { "tamanho": "L", "ate": 106 }, { "tamanho": "XL", "ate": 112 }],
+      "calca": [{ "tamanho": "38", "ate": 75 }, { "tamanho": "40", "ate": 80 }, { "tamanho": "42", "ate": 85 }, { "tamanho": "44", "ate": 90 }, { "tamanho": "46", "ate": 95 }],
+      "calcado": [{ "tamanho": "39", "ate": 25.5 }, { "tamanho": "40", "ate": 26.1 }, { "tamanho": "41", "ate": 26.8 }, { "tamanho": "42", "ate": 27.4 }, { "tamanho": "43", "ate": 28.1 }, { "tamanho": "44", "ate": 28.7 }]
+    }
+  ]
+}

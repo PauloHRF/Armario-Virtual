@@ -1,5 +1,5 @@
 import { get, set } from 'idb-keyval'
-import type { Combinacao, Peca } from './types'
+import type { Combinacao, Medidas, Peca, TamanhoMarca } from './types'
 
 const CHAVE_PECAS = 'pecas'
 
@@ -34,4 +34,23 @@ export async function salvarCombinacao(combinacao: Combinacao): Promise<void> {
 export async function removerCombinacao(id: string): Promise<void> {
   const todas = await listarCombinacoes()
   await set(CHAVE_COMBINACOES, todas.filter((c) => c.id !== id))
+}
+
+const CHAVE_MEDIDAS = 'medidas'
+const CHAVE_TAMANHOS_MARCA = 'tamanhosMarca'
+
+export async function lerMedidas(): Promise<Medidas> {
+  return (await get<Medidas>(CHAVE_MEDIDAS)) ?? {}
+}
+
+export async function salvarMedidas(medidas: Medidas): Promise<void> {
+  await set(CHAVE_MEDIDAS, medidas)
+}
+
+export async function listarTamanhosMarca(): Promise<TamanhoMarca[]> {
+  return (await get<TamanhoMarca[]>(CHAVE_TAMANHOS_MARCA)) ?? []
+}
+
+export async function salvarTamanhosMarca(lista: TamanhoMarca[]): Promise<void> {
+  await set(CHAVE_TAMANHOS_MARCA, lista)
 }
