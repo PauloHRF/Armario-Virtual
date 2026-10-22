@@ -45,3 +45,5 @@ export type Medidas = {
   quadril?: number
   pe?: number
 }
+
+export const CORES_NEUTRAS: readonly Cor[] = ['preto', 'branco', 'cinza', 'bege', 'marrom', 'azul-marinho']

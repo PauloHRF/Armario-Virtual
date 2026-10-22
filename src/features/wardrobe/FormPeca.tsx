@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { CATEGORIAS, CORES, ESTILOS, type Categoria, type Cor, type Estilo, type Peca } from '../../shared/types'
 import { reduzirFoto } from './reduzirFoto'
 import { sugerirTags } from './sugerirTags'
-import FotoPeca from './FotoPeca'
+import FotoPeca from '../../shared/FotoPeca'
 
 type Props = {
   peca: Peca | null // null = nova peça
