@@ -79,6 +79,7 @@ export type Camada = {
   y: number
   tam: number
   rot: number // graus
+  espelho?: boolean
 }
 
 export type LookMontado = {

@@ -6,6 +6,7 @@ import type { Camada, LookMontado, Peca } from '../../shared/types'
 import { exportarPng } from './exportar'
 
 const FUNDOS = ['#ffffff', '#f5f5f4', '#fde68a', '#fbcfe8', '#bfdbfe', '#bbf7d0', '#292524']
+const FIGURINHAS = ['⭐', '💖', '✨', '🌸', '🔥', '☀️', '🌙', '🎀', '👑', '💎', '🌈', '🍒']
 const limitar = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v))
 
 export default function Studio() {
@@ -46,25 +47,64 @@ export default function Studio() {
     if (texto) adicionar({ texto, tam: 0.08 })
   }
 
-  function arrastar(e: React.PointerEvent, c: Camada) {
-    setSel(c.id)
-    // selecionar traz a camada para o topo
-    setCamadas((cs) => [...cs.filter((x) => x.id !== c.id), c])
-    const r = quadro.current!.getBoundingClientRect()
-    const dx = c.x - (e.clientX - r.left) / r.width
-    const dy = c.y - (e.clientY - r.top) / r.height
-    const mover = (m: PointerEvent) =>
-      alterar(c.id, {
-        x: limitar((m.clientX - r.left) / r.width + dx, 0, 1),
-        y: limitar((m.clientY - r.top) / r.height + dy, 0, 1),
-      })
-    const soltar = () => {
-      window.removeEventListener('pointermove', mover)
-      window.removeEventListener('pointerup', soltar)
-    }
-    window.addEventListener('pointermove', mover)
-    window.addEventListener('pointerup', soltar)
+  // Gestos: 1 dedo arrasta; 2 dedos na camada fazem pinça (tamanho) e giro ao mesmo tempo.
+  // Toda vez que entra ou sai um dedo, a base do gesto é refeita a partir da camada atual.
+  const dedos = useRef(new Map<number, { x: number; y: number }>())
+  const gesto = useRef<{ id: string; c: Camada; pts: { x: number; y: number }[] } | null>(null)
+  const camadasRef = useRef(camadas)
+  camadasRef.current = camadas
+
+  const pontos = () => [...dedos.current.values()]
+  const rebasear = () => {
+    const c = gesto.current && camadasRef.current.find((x) => x.id === gesto.current!.id)
+    if (c && dedos.current.size) gesto.current = { id: c.id, c, pts: pontos() }
   }
+
+  function tocar(e: React.PointerEvent, c: Camada) {
+    try {
+      quadro.current!.setPointerCapture(e.pointerId) // o dedo continua valendo mesmo fora do quadro
+    } catch {
+      // ponteiro já inativo: segue sem captura
+    }
+    dedos.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    if (!gesto.current || dedos.current.size === 1) {
+      gesto.current = { id: c.id, c, pts: [] }
+      setSel(c.id)
+      // selecionar traz a camada para o topo
+      setCamadas((cs) => [...cs.filter((x) => x.id !== c.id), c])
+    }
+    rebasear()
+  }
+
+  function mexer(e: React.PointerEvent) {
+    const g = gesto.current
+    if (!g || !dedos.current.has(e.pointerId)) return
+    dedos.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    const r = quadro.current!.getBoundingClientRect()
+    const agora = pontos().slice(0, 2)
+    const antes = g.pts.slice(0, 2)
+    const centro = (p: { x: number; y: number }[]) => ({ x: p.reduce((s, q) => s + q.x, 0) / p.length, y: p.reduce((s, q) => s + q.y, 0) / p.length })
+    const [a, b] = [centro(antes), centro(agora)]
+    const mudanca: Partial<Camada> = {
+      x: limitar(g.c.x + (b.x - a.x) / r.width, 0, 1),
+      y: limitar(g.c.y + (b.y - a.y) / r.height, 0, 1),
+    }
+    if (agora.length === 2 && antes.length === 2) {
+      const d = (p: { x: number; y: number }[]) => Math.hypot(p[1].x - p[0].x, p[1].y - p[0].y)
+      const ang = (p: { x: number; y: number }[]) => Math.atan2(p[1].y - p[0].y, p[1].x - p[0].x)
+      mudanca.tam = limitar((g.c.tam * d(agora)) / Math.max(1, d(antes)), 0.04, g.c.texto !== undefined ? 0.4 : 1)
+      mudanca.rot = Math.round(g.c.rot + ((ang(agora) - ang(antes)) * 180) / Math.PI)
+    }
+    alterar(g.id, mudanca)
+  }
+
+  function soltar(e: React.PointerEvent) {
+    dedos.current.delete(e.pointerId)
+    if (dedos.current.size === 0) gesto.current = null
+    else rebasear()
+  }
+
+  const paraTras = () => atual && setCamadas((cs) => [cs.find((c) => c.id === atual.id)!, ...cs.filter((c) => c.id !== atual.id)])
 
   function duplicar() {
     if (atual) adicionar({ ...atual, x: limitar(atual.x + 0.05, 0, 1), y: limitar(atual.y + 0.05, 0, 1) })
@@ -110,6 +150,9 @@ export default function Studio() {
       <div
         ref={quadro}
         onPointerDown={(e) => e.target === e.currentTarget && setSel(null)}
+        onPointerMove={mexer}
+        onPointerUp={soltar}
+        onPointerCancel={soltar}
         className="relative mx-auto aspect-3/4 w-full touch-none overflow-hidden rounded-2xl shadow-md ring-1 ring-stone-200 select-none"
         style={{ background: fundo, containerType: 'inline-size' }}
       >
@@ -118,14 +161,14 @@ export default function Studio() {
           return (
             <div
               key={c.id}
-              onPointerDown={(e) => arrastar(e, c)}
+              onPointerDown={(e) => tocar(e, c)}
               className={`absolute cursor-grab ${c.id === sel ? 'outline-2 outline-dashed outline-sky-500' : ''}`}
               style={{
                 left: `${c.x * 100}%`,
                 top: `${c.y * 100}%`,
                 width: peca ? `${c.tam * 100}%` : undefined,
                 fontSize: peca ? undefined : `${c.tam * 100}cqw`,
-                transform: `translate(-50%, -50%) rotate(${c.rot}deg)`,
+                transform: `translate(-50%, -50%) rotate(${c.rot}deg) scaleX(${c.espelho ? -1 : 1})`,
               }}
             >
               {peca ? (
@@ -168,7 +211,9 @@ export default function Studio() {
               className="flex-1"
             />
           </label>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => alterar(atual.id, { espelho: !atual.espelho })} className="rounded-xl bg-white px-3 py-2 ring-1 ring-stone-200 border-0">Espelhar</button>
+            <button onClick={paraTras} className="rounded-xl bg-white px-3 py-2 ring-1 ring-stone-200 border-0">Para trás</button>
             <button onClick={duplicar} className="rounded-xl bg-white px-3 py-2 ring-1 ring-stone-200 border-0">Duplicar</button>
             <button onClick={remover} className="rounded-xl bg-white px-3 py-2 text-red-700 ring-1 ring-red-200">Remover</button>
           </div>
@@ -187,6 +232,14 @@ export default function Studio() {
         ))}
         <button onClick={adicionarTexto} className="ml-auto rounded-xl bg-white px-3 py-2 ring-1 ring-stone-200 border-0 text-sm">+ Texto</button>
       </div>
+
+      <ul className="sem-barra mt-3 flex gap-1 overflow-x-auto pb-1 text-2xl">
+        {FIGURINHAS.map((f) => (
+          <li key={f}>
+            <button aria-label={`Figurinha ${f}`} onClick={() => adicionar({ texto: f, tam: 0.15 })} className="rounded-xl p-1.5 hover:bg-stone-100">{f}</button>
+          </li>
+        ))}
+      </ul>
 
       <h2 className="mt-5 mb-2 font-display text-lg font-semibold">Suas peças</h2>
       {pecas.length === 0 ? (

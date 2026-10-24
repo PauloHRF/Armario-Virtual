@@ -25,6 +25,7 @@ export async function exportarPng(fundo: string, camadas: Camada[], pecas: Map<s
     ctx.save()
     ctx.translate(c.x * LARGURA, c.y * ALTURA)
     ctx.rotate((c.rot * Math.PI) / 180)
+    if (c.espelho) ctx.scale(-1, 1)
     const peca = c.pecaId ? pecas.get(c.pecaId) : undefined
     if (peca) {
       const img = await carregar(peca.foto)
