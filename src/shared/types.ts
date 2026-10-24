@@ -89,3 +89,13 @@ export type LookMontado = {
   camadas: Camada[] // a ultima fica por cima
   criadoEm: string
 }
+
+export type Viagem = {
+  id: string
+  nome: string
+  dias: number
+  estacao?: Estacao
+  pecaIds: string[] // peças planejadas para a mala
+  empacotadas: string[] // as que já estão na mala
+  criadaEm: string
+}

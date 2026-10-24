@@ -1,5 +1,5 @@
 import { get, set } from 'idb-keyval'
-import type { Combinacao, LookMontado, Medidas, Peca, TamanhoMarca } from './types'
+import type { Combinacao, LookMontado, Medidas, Peca, TamanhoMarca, Viagem } from './types'
 
 const CHAVE_PECAS = 'pecas'
 
@@ -84,4 +84,21 @@ export async function lerDiario(): Promise<Diario> {
 export async function definirDia(dia: string, lookId: string | null): Promise<void> {
   const { [dia]: _, ...resto } = await lerDiario()
   await set(CHAVE_DIARIO, lookId ? { ...resto, [dia]: lookId } : resto)
+}
+const CHAVE_VIAGENS = 'viagens'
+
+export async function listarViagens(): Promise<Viagem[]> {
+  return (await get<Viagem[]>(CHAVE_VIAGENS)) ?? []
+}
+
+export async function salvarViagem(viagem: Viagem): Promise<void> {
+  const todas = await listarViagens()
+  const i = todas.findIndex((v) => v.id === viagem.id)
+  if (i >= 0) todas[i] = viagem
+  else todas.push(viagem)
+  await set(CHAVE_VIAGENS, todas)
+}
+
+export async function removerViagem(id: string): Promise<void> {
+  await set(CHAVE_VIAGENS, (await listarViagens()).filter((v) => v.id !== id))
 }
