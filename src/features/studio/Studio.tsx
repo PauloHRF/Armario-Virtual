@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import Tela from '../../shared/Tela'
 import FotoPeca from '../../shared/FotoPeca'
 import { listarLooks, listarPecas, removerLook, salvarLook } from '../../shared/storage'
@@ -27,6 +28,21 @@ export default function Studio() {
   useEffect(() => {
     carregar()
   }, [])
+
+  // Vindo de "Abrir no Montar": monta o look com as peças em pilha (cima, baixo, calçado).
+  const { state } = useLocation()
+  useEffect(() => {
+    const ids: string[] | undefined = state?.pecaIds
+    if (!ids?.length) return
+    const alvo = [
+      { y: 0.27, tam: 0.46 },
+      { y: 0.6, tam: 0.4 },
+      { y: 0.86, tam: 0.26 },
+    ]
+    setCamadas(ids.map((pecaId, i) => ({ id: crypto.randomUUID(), pecaId, x: 0.5, rot: 0, ...alvo[Math.min(i, 2)] })))
+    setSel(null)
+    history.replaceState({}, '') // recarregar a página não refaz a montagem
+  }, [state])
 
   const porId = useMemo(() => new Map(pecas.map((p) => [p.id, p])), [pecas])
   // Ignora camadas cujas peças foram removidas do armário.

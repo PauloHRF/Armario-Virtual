@@ -1,4 +1,4 @@
-import { CORES_NEUTRAS, type Categoria, type Peca } from '../../shared/types'
+import { CORES_NEUTRAS, type Categoria, type Estacao, type Ocasiao, type Peca } from '../../shared/types'
 
 export type Look = {
   cima: Peca
@@ -26,9 +26,15 @@ function explicar(partes: Peca[]): string {
   return `O destaque é o ${f.cor} ${artigo(f.categoria)} ${f.categoria}; o resto é neutro, então a cor não briga, e o estilo é ${estilo} em tudo.`
 }
 
+export type Filtro = { estacao?: Estacao; ocasiao?: Ocasiao }
+
+// Peça sem estações/ocasiões cadastradas serve para qualquer uma (não é excluída).
+export const serve = <T extends string>(lista: T[] | undefined, v: T | undefined) => !v || !lista?.length || lista.includes(v)
+
 // Todas as combinações válidas: 1 de cima + 1 de baixo + calçado,
-// mesmo estilo e no máximo uma cor forte.
-export function gerarLooks(pecas: Peca[]): Look[] {
+// mesmo estilo, no máximo uma cor forte e, se pedido, para a estação/ocasião escolhida.
+export function gerarLooks(todas: Peca[], filtro: Filtro = {}): Look[] {
+  const pecas = todas.filter((p) => serve(p.estacoes, filtro.estacao) && serve(p.ocasioes, filtro.ocasiao))
   const cimas = pecas.filter((p) => CIMA.includes(p.categoria))
   const baixos = pecas.filter((p) => BAIXO.includes(p.categoria))
   const calcados = pecas.filter((p) => p.categoria === 'calçado')
