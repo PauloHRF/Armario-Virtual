@@ -1,5 +1,48 @@
 @import "tailwindcss";
 
+/* Paleta própria: as telas usam as classes stone-* e sky-*, então trocar aqui muda o app inteiro. */
+@theme {
+  --color-stone-50: #faf6f0;
+  --color-stone-100: #f3ece1;
+  --color-stone-200: #e8decd;
+  --color-stone-300: #d6c8b2;
+  --color-stone-400: #b3a28a;
+  --color-stone-500: #8a7a66;
+  --color-stone-600: #6b5d4c;
+  --color-stone-900: #2a2030;
+  --color-sky-500: #c8506e;
+  --color-sky-600: #ac3b58;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+}
+
 body {
-  @apply bg-stone-50 text-stone-900;
+  @apply bg-stone-50 text-stone-900 antialiased;
+}
+
+h1 {
+  font-family: var(--font-display);
+}
+
+/* Campos de formulário com o mesmo ar dos cartões */
+select,
+input:not([type="checkbox"]):not([type="range"]) {
+  @apply rounded-xl border border-stone-300 bg-white px-3 py-2 outline-none;
+}
+select:focus,
+input:focus-visible {
+  @apply border-sky-500 ring-2 ring-sky-500/20;
+}
+input[type="range"],
+input[type="checkbox"] {
+  accent-color: var(--color-sky-500);
+}
+button {
+  cursor: pointer;
+}
+
+.sem-barra {
+  scrollbar-width: none;
+}
+.sem-barra::-webkit-scrollbar {
+  display: none;
 }
