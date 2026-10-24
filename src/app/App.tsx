@@ -27,7 +27,7 @@ function Icone({ id }: { id: string }) {
 }
 
 const aba = (ativa: boolean) =>
-  `flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-[11px] transition ${ativa ? 'font-semibold text-sky-600' : 'text-stone-500'}`
+  `flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-xs transition ${ativa ? 'font-semibold text-sky-600' : 'text-stone-500'}`
 
 export default function App() {
   const [mais, setMais] = useState(false)
@@ -55,7 +55,7 @@ export default function App() {
       {mais && <button aria-label="Fechar menu" className="fixed inset-0 z-10 cursor-default bg-stone-900/20" onClick={() => setMais(false)} />}
       <nav className="fixed inset-x-0 bottom-0 z-20 px-3 pb-3">
         {mais && (
-          <ul className="mx-auto mb-2 max-w-md rounded-2xl border border-stone-200 bg-white p-1 shadow-lg shadow-stone-900/10">
+          <ul className="mx-auto mb-2 max-w-md rounded-2xl border border-stone-200 bg-white p-1 sombra-alta">
             {outras.map((f) => (
               <li key={f.id}>
                 <NavLink
@@ -70,7 +70,7 @@ export default function App() {
             ))}
           </ul>
         )}
-        <ul className="mx-auto flex max-w-md rounded-2xl border border-stone-200 bg-white/95 p-1 shadow-lg shadow-stone-900/10 backdrop-blur">
+        <ul className="mx-auto flex max-w-md rounded-2xl border border-stone-200 bg-white/95 p-1 sombra-alta backdrop-blur">
           {principais.map((f) => (
             <li key={f.id} className="flex-1">
               <NavLink to={f.rota} onClick={() => setMais(false)} className={({ isActive }) => aba(isActive)}>

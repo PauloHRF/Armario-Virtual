@@ -28,7 +28,7 @@ export default function Shopping() {
       <ol className="space-y-3">
         {sugestoes.map((s, i) => (
           <li key={s.titulo} className="rounded-lg border border-stone-200 bg-white p-3">
-            <p className="font-medium">{i + 1}. {s.titulo}</p>
+            <p className="font-semibold">{i + 1}. {s.titulo}</p>
             <p className="mt-1 text-sm text-stone-500">{s.motivo}</p>
           </li>
         ))}

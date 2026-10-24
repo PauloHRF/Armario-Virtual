@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Chips from '../../shared/Chips'
+import Vazio from '../../shared/Vazio'
 import Tela from '../../shared/Tela'
 import FotoPeca from '../../shared/FotoPeca'
 import {
@@ -88,31 +89,42 @@ export default function Outfits() {
       </div>
 
       {carregou && visiveis.length === 0 && (
-        <p className="text-stone-500">
-          {estacao.length || ocasiao.length
-            ? 'Nenhuma combinação para essa estação/ocasião. Tire um filtro ou cadastre mais peças.'
-            : pecas.length < 6
-              ? 'Cadastre pelo menos 6 peças (camisetas ou camisas, calças ou bermudas, e calçados) para ver combinações.'
-              : 'Ainda não há combinação possível. Você precisa de uma peça de cima, uma de baixo e um calçado do mesmo estilo, com no máximo uma cor forte.'}
-        </p>
+        <Vazio
+          emoji="✨"
+          titulo={estacao.length || ocasiao.length ? 'Sem combinações para isso' : 'Vamos montar seus looks'}
+          texto={
+            estacao.length || ocasiao.length
+              ? 'Nenhuma combinação serve para essa estação ou ocasião. Tire um filtro ou cadastre mais peças.'
+              : pecas.length < 6
+                ? 'Cadastre pelo menos 6 peças (algo de cima, algo de baixo e calçados) e as sugestões aparecem aqui.'
+                : 'Falta uma peça de cima, uma de baixo e um calçado do mesmo estilo, com no máximo uma cor forte.'
+          }
+          acao={
+            !(estacao.length || ocasiao.length) && (
+              <button onClick={() => navegar('/armario')} className="min-h-12 w-full rounded-2xl bg-sky-500 font-semibold text-white sombra-alta">
+                Ir para o armário
+              </button>
+            )
+          }
+        />
       )}
 
       <ul className="space-y-4">
         {visiveis.map((l) => (
-          <li key={idDoLook(l)} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-stone-200">
+          <li key={idDoLook(l)} className="rounded-2xl bg-white p-3 sombra ring-1 ring-stone-200">
             <Fotos pecas={[l.cima, l.baixo, l.calcado]} />
             <p className="mt-2 text-sm">{l.explicacao}</p>
             <div className="mt-2 grid grid-cols-2 gap-2">
               <button
                 onClick={() => salvar(l)}
                 disabled={ehSalvo(l)}
-                className="rounded-xl bg-white p-2 text-sm font-medium ring-1 ring-stone-200 disabled:text-stone-400"
+                className="min-h-11 rounded-xl bg-white p-2 text-sm font-semibold ring-1 ring-stone-200 disabled:text-stone-400"
               >
                 {ehSalvo(l) ? 'Salva ✓' : 'Salvar'}
               </button>
               <button
                 onClick={() => navegar('/montar', { state: { pecaIds: [l.cima.id, l.baixo.id, l.calcado.id] } })}
-                className="rounded-xl bg-stone-900 p-2 text-sm font-medium text-white"
+                className="min-h-11 rounded-xl bg-stone-900 p-2 text-sm font-semibold text-white"
               >
                 Abrir no Montar
               </button>
@@ -122,20 +134,20 @@ export default function Outfits() {
       </ul>
 
       {looks.length > POR_VEZ && (
-        <button onClick={outra} className="mt-4 w-full rounded-xl bg-sky-500 p-3 font-medium text-white">
+        <button onClick={outra} className="mt-4 w-full rounded-xl bg-sky-500 p-3 font-semibold text-white">
           Outra sugestão
         </button>
       )}
 
       {salvasValidas.length > 0 && (
         <>
-          <h2 className="mb-2 mt-8 font-display text-2xl font-semibold">Salvas</h2>
+          <h2 className="mb-2 mt-8 font-display text-base font-semibold">Salvas</h2>
           <ul className="space-y-3">
             {salvasValidas.map(({ s, partes }) => (
-              <li key={s.id} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-stone-200">
+              <li key={s.id} className="rounded-2xl bg-white p-3 sombra ring-1 ring-stone-200">
                 <Fotos pecas={partes} />
                 <div className="mt-2 flex gap-4 text-sm">
-                  <button onClick={() => navegar('/montar', { state: { pecaIds: s.pecaIds } })} className="font-medium">Abrir no Montar</button>
+                  <button onClick={() => navegar('/montar', { state: { pecaIds: s.pecaIds } })} className="font-semibold">Abrir no Montar</button>
                   <button onClick={() => remover(s.id)} className="text-red-600">Remover</button>
                 </div>
               </li>
