@@ -1,5 +1,9 @@
 import { useState, type FormEvent } from 'react'
-import { CATEGORIAS, CORES, ESTILOS, type Categoria, type Cor, type Estilo, type Peca } from '../../shared/types'
+import {
+  CATEGORIAS, CORES, ESTACOES, ESTAMPAS, ESTILOS, MATERIAIS, OCASIOES,
+  type Categoria, type Cor, type Estacao, type Estampa, type Estilo, type Material, type Ocasiao, type Peca,
+} from '../../shared/types'
+import Chips from '../../shared/Chips'
 import { reduzirFoto } from './reduzirFoto'
 import { sugerirTags } from './sugerirTags'
 import FotoPeca from '../../shared/FotoPeca'
@@ -10,7 +14,7 @@ type Props = {
   aoCancelar: () => void
 }
 
-const campo = 'w-full rounded-lg border border-stone-300 bg-white p-2'
+const campo = 'mt-1 w-full'
 
 export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
   const [foto, setFoto] = useState<Blob | null>(peca?.foto ?? null)
@@ -19,9 +23,13 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
   const [estilo, setEstilo] = useState<Estilo>(peca?.estilo ?? 'casual')
   const [marca, setMarca] = useState(peca?.marca ?? '')
   const [tamanho, setTamanho] = useState(peca?.tamanho ?? '')
+  const [estampa, setEstampa] = useState<Estampa[]>(peca?.estampa ? [peca.estampa] : [])
+  const [material, setMaterial] = useState<Material[]>(peca?.material ? [peca.material] : [])
+  const [estacoes, setEstacoes] = useState<Estacao[]>(peca?.estacoes ?? [])
+  const [ocasioes, setOcasioes] = useState<Ocasiao[]>(peca?.ocasioes ?? [])
+  const [favorita, setFavorita] = useState(peca?.favorita ?? false)
   const [erro, setErro] = useState('')
   const [salvando, setSalvando] = useState(false)
-
   async function escolherFoto(arquivo?: File) {
     if (!arquivo) return
     setErro('')
@@ -53,6 +61,11 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
         estilo,
         marca: marca.trim(),
         tamanho: tamanho.trim(),
+        estampa: estampa[0],
+        material: material[0],
+        estacoes,
+        ocasioes,
+        favorita,
         cadastradaEm: peca?.cadastradaEm ?? new Date().toISOString(),
       })
     } catch {
@@ -63,15 +76,15 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
 
   return (
     <form onSubmit={enviar} className="space-y-4">
-      <h1 className="text-xl font-bold">{peca ? 'Editar peça' : 'Nova peça'}</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">{peca ? 'Editar peça' : 'Nova peça'}</h1>
 
-      {foto && <FotoPeca foto={foto} className="mx-auto h-56 w-full rounded-lg object-cover" />}
+      {foto && <FotoPeca foto={foto} className="mx-auto aspect-4/5 w-full rounded-2xl object-cover shadow-sm ring-1 ring-stone-200" />}
       <div className="grid grid-cols-2 gap-2">
-        <label className="cursor-pointer rounded-lg bg-stone-900 p-2 text-center text-sm text-white">
+        <label className="cursor-pointer rounded-xl bg-stone-900 p-3 text-center text-sm font-medium text-white">
           📷 Tirar foto
           <input type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => escolherFoto(e.target.files?.[0])} />
         </label>
-        <label className="cursor-pointer rounded-lg border border-stone-300 bg-white p-2 text-center text-sm">
+        <label className="cursor-pointer rounded-xl bg-white p-3 text-center text-sm font-medium ring-1 ring-stone-200">
           🖼️ Galeria
           <input type="file" accept="image/*" className="hidden" onChange={(e) => escolherFoto(e.target.files?.[0])} />
         </label>
@@ -110,6 +123,16 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
         </select>
       </label>
 
+      <Chips titulo="Estampa" opcoes={ESTAMPAS} valor={estampa} aoMudar={setEstampa} />
+      <Chips titulo="Material" opcoes={MATERIAIS} valor={material} aoMudar={setMaterial} />
+      <Chips titulo="Estações" opcoes={ESTACOES} valor={estacoes} aoMudar={setEstacoes} multiplo />
+      <Chips titulo="Ocasiões" opcoes={OCASIOES} valor={ocasioes} aoMudar={setOcasioes} multiplo />
+
+      <label className="flex items-center gap-2 text-sm">
+        <input type="checkbox" checked={favorita} onChange={(e) => setFavorita(e.target.checked)} />
+        ★ Peça favorita
+      </label>
+
       <div className="grid grid-cols-2 gap-2">
         <label className="block text-sm">
           Marca
@@ -124,8 +147,8 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
       {erro && <p className="text-sm text-red-600">{erro}</p>}
 
       <div className="grid grid-cols-2 gap-2">
-        <button type="button" onClick={aoCancelar} className="rounded-lg border border-stone-300 bg-white p-2">Cancelar</button>
-        <button type="submit" disabled={salvando} className="rounded-lg bg-stone-900 p-2 text-white disabled:opacity-50">Salvar</button>
+        <button type="button" onClick={aoCancelar} className="rounded-xl bg-white p-3 font-medium ring-1 ring-stone-200">Cancelar</button>
+        <button type="submit" disabled={salvando} className="rounded-xl bg-sky-500 p-3 font-medium text-white disabled:opacity-50">Salvar</button>
       </div>
     </form>
   )
