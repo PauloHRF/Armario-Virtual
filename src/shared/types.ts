@@ -16,6 +16,15 @@ export const CORES = [
   { nome: 'roxo', hex: '#7c3aed' },
 ] as const
 
+export const ESTAMPAS = ['lisa', 'listrada', 'xadrez', 'floral', 'poá', 'estampada'] as const
+export const MATERIAIS = ['algodão', 'jeans', 'linho', 'lã', 'couro', 'sintético'] as const
+export const ESTACOES = ['verão', 'outono', 'inverno', 'primavera'] as const
+export const OCASIOES = ['dia a dia', 'trabalho', 'festa', 'academia', 'viagem'] as const
+
+export type Estampa = (typeof ESTAMPAS)[number]
+export type Material = (typeof MATERIAIS)[number]
+export type Estacao = (typeof ESTACOES)[number]
+export type Ocasiao = (typeof OCASIOES)[number]
 export type Categoria = (typeof CATEGORIAS)[number]
 export type Estilo = (typeof ESTILOS)[number]
 export type Cor = (typeof CORES)[number]['nome']
@@ -28,6 +37,12 @@ export type Peca = {
   estilo: Estilo
   marca: string
   tamanho: string
+  // Opcionais: peças cadastradas antes destes campos continuam válidas.
+  estampa?: Estampa
+  material?: Material
+  estacoes?: Estacao[]
+  ocasioes?: Ocasiao[]
+  favorita?: boolean
   cadastradaEm: string // ISO
 }
 
@@ -52,4 +67,35 @@ export type TamanhoMarca = {
   id: string
   marca: string
   tamanho: string
+}
+
+// Montador de looks: cada camada e uma peca ou um texto sobre o quadro.
+// x, y = centro (0..1 do quadro); tam = largura (peca) ou tamanho da fonte (texto), fracao da largura.
+export type Camada = {
+  id: string
+  pecaId?: string
+  texto?: string
+  x: number
+  y: number
+  tam: number
+  rot: number // graus
+  espelho?: boolean
+}
+
+export type LookMontado = {
+  id: string
+  nome: string
+  fundo: string
+  camadas: Camada[] // a ultima fica por cima
+  criadoEm: string
+}
+
+export type Viagem = {
+  id: string
+  nome: string
+  dias: number
+  estacao?: Estacao
+  pecaIds: string[] // peças planejadas para a mala
+  empacotadas: string[] // as que já estão na mala
+  criadaEm: string
 }

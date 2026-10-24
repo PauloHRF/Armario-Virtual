@@ -1,5 +1,5 @@
 import { get, set } from 'idb-keyval'
-import type { Combinacao, Medidas, Peca, TamanhoMarca } from './types'
+import type { Combinacao, LookMontado, Medidas, Peca, TamanhoMarca, Viagem } from './types'
 
 const CHAVE_PECAS = 'pecas'
 
@@ -53,4 +53,52 @@ export async function listarTamanhosMarca(): Promise<TamanhoMarca[]> {
 
 export async function salvarTamanhosMarca(lista: TamanhoMarca[]): Promise<void> {
   await set(CHAVE_TAMANHOS_MARCA, lista)
+}
+
+const CHAVE_LOOKS = 'looksMontados'
+
+export async function listarLooks(): Promise<LookMontado[]> {
+  return (await get<LookMontado[]>(CHAVE_LOOKS)) ?? []
+}
+
+export async function salvarLook(look: LookMontado): Promise<void> {
+  const todos = await listarLooks()
+  const i = todos.findIndex((l) => l.id === look.id)
+  if (i >= 0) todos[i] = look
+  else todos.push(look)
+  await set(CHAVE_LOOKS, todos)
+}
+
+export async function removerLook(id: string): Promise<void> {
+  await set(CHAVE_LOOKS, (await listarLooks()).filter((l) => l.id !== id))
+}
+
+// Diário: dia (AAAA-MM-DD) -> id do look usado naquele dia.
+const CHAVE_DIARIO = 'diario'
+export type Diario = Record<string, string>
+
+export async function lerDiario(): Promise<Diario> {
+  return (await get<Diario>(CHAVE_DIARIO)) ?? {}
+}
+
+export async function definirDia(dia: string, lookId: string | null): Promise<void> {
+  const { [dia]: _, ...resto } = await lerDiario()
+  await set(CHAVE_DIARIO, lookId ? { ...resto, [dia]: lookId } : resto)
+}
+const CHAVE_VIAGENS = 'viagens'
+
+export async function listarViagens(): Promise<Viagem[]> {
+  return (await get<Viagem[]>(CHAVE_VIAGENS)) ?? []
+}
+
+export async function salvarViagem(viagem: Viagem): Promise<void> {
+  const todas = await listarViagens()
+  const i = todas.findIndex((v) => v.id === viagem.id)
+  if (i >= 0) todas[i] = viagem
+  else todas.push(viagem)
+  await set(CHAVE_VIAGENS, todas)
+}
+
+export async function removerViagem(id: string): Promise<void> {
+  await set(CHAVE_VIAGENS, (await listarViagens()).filter((v) => v.id !== id))
 }
