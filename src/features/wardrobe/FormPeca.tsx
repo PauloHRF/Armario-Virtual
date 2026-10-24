@@ -5,6 +5,7 @@ import {
 } from '../../shared/types'
 import Chips from '../../shared/Chips'
 import { reduzirFoto } from './reduzirFoto'
+import { recortarFundo } from './recortarFundo'
 import { sugerirTags } from './sugerirTags'
 import FotoPeca from '../../shared/FotoPeca'
 
@@ -30,12 +31,31 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
   const [favorita, setFavorita] = useState(peca?.favorita ?? false)
   const [erro, setErro] = useState('')
   const [salvando, setSalvando] = useState(false)
+  const [original, setOriginal] = useState<Blob | null>(null) // foto antes do recorte, para desfazer
+  const [recorte, setRecorte] = useState<number | null>(null) // null = parado; 0..1 = progresso
+
+  async function tirarFundo() {
+    if (!foto) return
+    setErro('')
+    setRecorte(0)
+    try {
+      const semFundo = await recortarFundo(foto, setRecorte)
+      setOriginal(foto)
+      setFoto(semFundo)
+    } catch {
+      setErro('Não consegui recortar o fundo. Confira a conexão (o modelo é baixado na primeira vez) e tente de novo.')
+    } finally {
+      setRecorte(null)
+    }
+  }
+
   async function escolherFoto(arquivo?: File) {
     if (!arquivo) return
     setErro('')
     try {
       const reduzida = await reduzirFoto(arquivo)
       setFoto(reduzida)
+      setOriginal(null)
       const tags = await sugerirTags(reduzida)
       if (tags.categoria) setCategoria(tags.categoria)
       if (tags.cor) setCor(tags.cor)
@@ -78,7 +98,26 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
     <form onSubmit={enviar} className="space-y-4">
       <h1 className="text-3xl font-semibold tracking-tight">{peca ? 'Editar peça' : 'Nova peça'}</h1>
 
-      {foto && <FotoPeca foto={foto} className="mx-auto aspect-4/5 w-full rounded-2xl object-cover shadow-sm ring-1 ring-stone-200" />}
+      {foto && (
+        <div className="space-y-2">
+          <div
+            className="aspect-4/5 overflow-hidden rounded-2xl shadow-sm ring-1 ring-stone-200"
+            // xadrez cinza-claro: deixa a transparência visível depois do recorte
+            style={original ? { background: 'repeating-conic-gradient(#e8decd 0 25%, #fff 0 50%) 0 0 / 20px 20px' } : undefined}
+          >
+            <FotoPeca foto={foto} className={`size-full ${original ? 'object-contain' : 'object-cover'}`} />
+          </div>
+          {original ? (
+            <button type="button" onClick={() => (setFoto(original), setOriginal(null))} className="w-full rounded-xl bg-white p-3 text-sm font-medium ring-1 ring-stone-200">
+              ↩ Voltar à foto original
+            </button>
+          ) : (
+            <button type="button" onClick={tirarFundo} disabled={recorte !== null} className="w-full rounded-xl bg-white p-3 text-sm font-medium ring-1 ring-stone-200 disabled:opacity-60">
+              {recorte === null ? '✂️ Remover fundo' : `Recortando… ${Math.round(recorte * 100)}%`}
+            </button>
+          )}
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-2">
         <label className="cursor-pointer rounded-xl bg-stone-900 p-3 text-center text-sm font-medium text-white">
           📷 Tirar foto
