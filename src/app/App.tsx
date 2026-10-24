@@ -1,6 +1,9 @@
-import type { ReactNode } from 'react'
-import { Navigate, NavLink, Route, Routes } from 'react-router-dom'
+import { useState, type ReactNode } from 'react'
+import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { features } from '../features'
+
+// Abas principais na barra; o resto fica em "Mais", para o menu não ficar carregado.
+const PRINCIPAIS = ['armario', 'combinacoes', 'montar', 'diario']
 
 const tracos = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' } as const
 
@@ -15,11 +18,28 @@ const ICONES: Record<string, ReactNode> = {
   tamanhos: <path d="M3 9h18v6H3V9Zm4 0v3m4-3v2m4-2v3m4-3v2" />,
 }
 
+function Icone({ id }: { id: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className="size-6" aria-hidden {...tracos}>
+      {ICONES[id]}
+    </svg>
+  )
+}
+
+const aba = (ativa: boolean) =>
+  `flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-xs transition ${ativa ? 'font-semibold text-sky-600' : 'text-stone-500'}`
+
 export default function App() {
+  const [mais, setMais] = useState(false)
+  const { pathname } = useLocation()
+  const principais = features.filter((f) => PRINCIPAIS.includes(f.id))
+  const outras = features.filter((f) => !PRINCIPAIS.includes(f.id))
+  const emOutra = outras.some((f) => pathname.endsWith(f.rota))
+
   return (
     <div className="mx-auto flex min-h-dvh max-w-md flex-col">
       <header className="sticky top-0 z-10 border-b border-stone-200/70 bg-stone-50/90 px-4 py-3 backdrop-blur">
-        <p className="font-display text-lg font-semibold tracking-tight">
+        <p className="font-display text-base font-semibold tracking-tight">
           Armário <span className="text-sky-500">Virtual</span>
         </p>
       </header>
@@ -31,23 +51,42 @@ export default function App() {
           ))}
         </Routes>
       </main>
-      <nav className="fixed inset-x-0 bottom-0 z-10 px-3 pb-3">
-        <ul className="mx-auto flex max-w-md rounded-2xl border border-stone-200 bg-white/95 p-1 shadow-lg shadow-stone-900/10 backdrop-blur">
-          {features.map((f) => (
+
+      {mais && <button aria-label="Fechar menu" className="fixed inset-0 z-10 cursor-default bg-stone-900/20" onClick={() => setMais(false)} />}
+      <nav className="fixed inset-x-0 bottom-0 z-20 px-3 pb-3">
+        {mais && (
+          <ul className="mx-auto mb-2 max-w-md rounded-2xl border border-stone-200 bg-white p-1 sombra-alta">
+            {outras.map((f) => (
+              <li key={f.id}>
+                <NavLink
+                  to={f.rota}
+                  onClick={() => setMais(false)}
+                  className={({ isActive }) => `flex items-center gap-3 rounded-xl px-4 py-3 ${isActive ? 'bg-stone-100 font-semibold' : ''}`}
+                >
+                  <Icone id={f.id} />
+                  {f.nome}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        )}
+        <ul className="mx-auto flex max-w-md rounded-2xl border border-stone-200 bg-white/95 p-1 sombra-alta backdrop-blur">
+          {principais.map((f) => (
             <li key={f.id} className="flex-1">
-              <NavLink
-                to={f.rota}
-                className={({ isActive }) =>
-                  `flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-[10px] transition ${isActive ? 'bg-stone-900 font-semibold text-white' : 'text-stone-500'}`
-                }
-              >
-                <svg viewBox="0 0 24 24" className="size-5" aria-hidden {...tracos}>
-                  {ICONES[f.id]}
-                </svg>
+              <NavLink to={f.rota} onClick={() => setMais(false)} className={({ isActive }) => aba(isActive)}>
+                <Icone id={f.id} />
                 {f.nome}
               </NavLink>
             </li>
           ))}
+          <li className="flex-1">
+            <button onClick={() => setMais(!mais)} aria-expanded={mais} className={`${aba(mais || emOutra)} w-full`}>
+              <svg viewBox="0 0 24 24" className="size-6" aria-hidden {...tracos}>
+                <path d="M5 12h.01M12 12h.01M19 12h.01" strokeWidth={3} />
+              </svg>
+              Mais
+            </button>
+          </li>
         </ul>
       </nav>
     </div>

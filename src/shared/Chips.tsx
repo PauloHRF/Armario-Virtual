@@ -15,7 +15,7 @@ export default function Chips<T extends string>({ titulo, opcoes, valor, aoMudar
   }
   return (
     <div className="text-sm">
-      <p className="font-medium text-stone-600">{titulo}</p>
+      <p className="font-semibold text-stone-600">{titulo}</p>
       <div className="mt-2 flex flex-wrap gap-2">
         {opcoes.map((o) => (
           <button
@@ -23,7 +23,7 @@ export default function Chips<T extends string>({ titulo, opcoes, valor, aoMudar
             type="button"
             aria-pressed={valor.includes(o)}
             onClick={() => alternar(o)}
-            className={`rounded-full px-3.5 py-1.5 transition ${valor.includes(o) ? 'bg-stone-900 text-white' : 'bg-white text-stone-600 ring-1 ring-stone-200'}`}
+            className={`rounded-full min-h-11 px-4 transition ${valor.includes(o) ? 'bg-stone-900 text-white' : 'bg-white text-stone-600 ring-1 ring-stone-200'}`}
           >
             {o}
           </button>

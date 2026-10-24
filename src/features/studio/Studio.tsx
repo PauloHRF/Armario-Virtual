@@ -4,6 +4,7 @@ import Tela from '../../shared/Tela'
 import FotoPeca from '../../shared/FotoPeca'
 import { listarLooks, listarPecas, removerLook, salvarLook } from '../../shared/storage'
 import type { Camada, LookMontado, Peca } from '../../shared/types'
+import Aviso from '../../shared/Aviso'
 import { exportarPng } from './exportar'
 
 const FUNDOS = ['#ffffff', '#f5f5f4', '#fde68a', '#fbcfe8', '#bfdbfe', '#bbf7d0', '#292524']
@@ -19,6 +20,7 @@ export default function Studio() {
   const [camadas, setCamadas] = useState<Camada[]>([])
   const [sel, setSel] = useState<string | null>(null)
   const quadro = useRef<HTMLDivElement>(null)
+  const [avisos, setAvisos] = useState(0)
 
   async function carregar() {
     const [p, l] = await Promise.all([listarPecas(), listarLooks()])
@@ -142,6 +144,7 @@ export default function Studio() {
   async function salvar() {
     await salvarLook({ id, nome: nome.trim() || 'Look sem nome', fundo, camadas: visiveis, criadoEm: new Date().toISOString() })
     await carregar()
+    setAvisos((n) => n + 1)
   }
 
   function abrir(l: LookMontado) {
@@ -190,7 +193,7 @@ export default function Studio() {
               {peca ? (
                 <FotoPeca foto={peca.foto} className="pointer-events-none w-full" />
               ) : (
-                <span className="pointer-events-none block font-bold whitespace-nowrap text-stone-900">{c.texto}</span>
+                <span className="pointer-events-none block font-semibold whitespace-nowrap text-stone-900">{c.texto}</span>
               )}
             </div>
           )
@@ -203,7 +206,7 @@ export default function Studio() {
       </div>
 
       {atual && (
-        <div className="mt-3 space-y-2 rounded-2xl bg-white p-4 text-sm shadow-sm ring-1 ring-stone-200">
+        <div className="mt-3 space-y-2 rounded-2xl bg-white p-4 text-sm sombra ring-1 ring-stone-200">
           <label className="flex items-center gap-2">
             Tamanho
             <input
@@ -228,10 +231,10 @@ export default function Studio() {
             />
           </label>
           <div className="flex flex-wrap gap-2">
-            <button onClick={() => alterar(atual.id, { espelho: !atual.espelho })} className="rounded-xl bg-white px-3 py-2 ring-1 ring-stone-200 border-0">Espelhar</button>
-            <button onClick={paraTras} className="rounded-xl bg-white px-3 py-2 ring-1 ring-stone-200 border-0">Para trás</button>
-            <button onClick={duplicar} className="rounded-xl bg-white px-3 py-2 ring-1 ring-stone-200 border-0">Duplicar</button>
-            <button onClick={remover} className="rounded-xl bg-white px-3 py-2 text-red-700 ring-1 ring-red-200">Remover</button>
+            <button onClick={() => alterar(atual.id, { espelho: !atual.espelho })} className="rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0">Espelhar</button>
+            <button onClick={paraTras} className="rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0">Para trás</button>
+            <button onClick={duplicar} className="rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0">Duplicar</button>
+            <button onClick={remover} className="rounded-xl bg-white min-h-11 px-4 text-red-700 ring-1 ring-red-200">Remover</button>
           </div>
         </div>
       )}
@@ -242,14 +245,18 @@ export default function Studio() {
             key={f}
             aria-label={`Fundo ${f}`}
             onClick={() => setFundo(f)}
-            className={`size-7 rounded-full border ${f === fundo ? 'ring-2 ring-sky-500' : 'border-stone-300'}`}
-            style={{ background: f }}
-          />
+            className="grid size-11 place-items-center"
+          >
+            <span
+              className={`size-7 rounded-full border ${f === fundo ? 'ring-2 ring-sky-500 ring-offset-2' : 'border-stone-300'}`}
+              style={{ background: f }}
+            />
+          </button>
         ))}
-        <button onClick={adicionarTexto} className="ml-auto rounded-xl bg-white px-3 py-2 ring-1 ring-stone-200 border-0 text-sm">+ Texto</button>
+        <button onClick={adicionarTexto} className="ml-auto rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0 text-sm">+ Texto</button>
       </div>
 
-      <ul className="sem-barra mt-3 flex gap-1 overflow-x-auto pb-1 text-2xl">
+      <ul className="sem-barra mt-3 flex gap-1 overflow-x-auto pb-1 text-[28px]">
         {FIGURINHAS.map((f) => (
           <li key={f}>
             <button aria-label={`Figurinha ${f}`} onClick={() => adicionar({ texto: f, tam: 0.15 })} className="rounded-xl p-1.5 hover:bg-stone-100">{f}</button>
@@ -257,7 +264,7 @@ export default function Studio() {
         ))}
       </ul>
 
-      <h2 className="mt-5 mb-2 font-display text-lg font-semibold">Suas peças</h2>
+      <h2 className="mt-5 mb-2 font-display text-base font-semibold">Suas peças</h2>
       {pecas.length === 0 ? (
         <p className="text-sm text-stone-500">Cadastre peças na aba Armário para montar looks.</p>
       ) : (
@@ -279,17 +286,17 @@ export default function Studio() {
           placeholder="Nome do look"
           className="min-w-0 flex-1"
         />
-        <button onClick={salvar} disabled={!visiveis.length} className="rounded-xl bg-sky-500 px-4 py-2 font-medium text-white disabled:opacity-40">Salvar</button>
-        <button onClick={baixar} disabled={!visiveis.length} className="rounded-xl bg-white px-3 py-2 ring-1 ring-stone-200 border-0 disabled:opacity-40">PNG</button>
-        <button onClick={novo} className="rounded-xl bg-white px-3 py-2 ring-1 ring-stone-200 border-0">Novo</button>
+        <button onClick={salvar} disabled={!visiveis.length} className="rounded-xl bg-sky-500 min-h-11 px-5 font-semibold text-white disabled:opacity-40">Salvar</button>
+        <button onClick={baixar} disabled={!visiveis.length} className="rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0 disabled:opacity-40">PNG</button>
+        <button onClick={novo} className="rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0">Novo</button>
       </div>
 
       {looks.length > 0 && (
         <>
-          <h2 className="mt-5 mb-2 font-display text-lg font-semibold">Looks salvos</h2>
+          <h2 className="mt-5 mb-2 font-display text-base font-semibold">Looks salvos</h2>
           <ul className="space-y-1">
             {looks.map((l) => (
-              <li key={l.id} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm">
+              <li key={l.id} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white min-h-11 px-4 text-sm">
                 <button onClick={() => abrir(l)} className="flex-1 text-left">{l.nome}</button>
                 <button
                   onClick={async () => {
@@ -305,6 +312,7 @@ export default function Studio() {
           </ul>
         </>
       )}
+      <Aviso mensagem="Look salvo ✨" chave={avisos} />
     </Tela>
   )
 }

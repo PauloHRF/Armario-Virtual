@@ -96,34 +96,34 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
 
   return (
     <form onSubmit={enviar} className="space-y-4">
-      <h1 className="text-3xl font-semibold tracking-tight">{peca ? 'Editar peça' : 'Nova peça'}</h1>
+      <h1 className="text-[28px] leading-9 font-semibold tracking-tight">{peca ? 'Editar peça' : 'Nova peça'}</h1>
 
       {foto && (
         <div className="space-y-2">
           <div
-            className="aspect-4/5 overflow-hidden rounded-2xl shadow-sm ring-1 ring-stone-200"
+            className="aspect-4/5 overflow-hidden rounded-2xl sombra ring-1 ring-stone-200"
             // xadrez cinza-claro: deixa a transparência visível depois do recorte
             style={original ? { background: 'repeating-conic-gradient(#e8decd 0 25%, #fff 0 50%) 0 0 / 20px 20px' } : undefined}
           >
             <FotoPeca foto={foto} className={`size-full ${original ? 'object-contain' : 'object-cover'}`} />
           </div>
           {original ? (
-            <button type="button" onClick={() => (setFoto(original), setOriginal(null))} className="w-full rounded-xl bg-white p-3 text-sm font-medium ring-1 ring-stone-200">
+            <button type="button" onClick={() => (setFoto(original), setOriginal(null))} className="w-full rounded-xl bg-white p-3 text-sm font-semibold ring-1 ring-stone-200">
               ↩ Voltar à foto original
             </button>
           ) : (
-            <button type="button" onClick={tirarFundo} disabled={recorte !== null} className="w-full rounded-xl bg-white p-3 text-sm font-medium ring-1 ring-stone-200 disabled:opacity-60">
+            <button type="button" onClick={tirarFundo} disabled={recorte !== null} className="w-full rounded-xl bg-white p-3 text-sm font-semibold ring-1 ring-stone-200 disabled:opacity-60">
               {recorte === null ? '✂️ Remover fundo' : `Recortando… ${Math.round(recorte * 100)}%`}
             </button>
           )}
         </div>
       )}
       <div className="grid grid-cols-2 gap-2">
-        <label className="cursor-pointer rounded-xl bg-stone-900 p-3 text-center text-sm font-medium text-white">
+        <label className="cursor-pointer rounded-xl bg-stone-900 p-3 text-center text-sm font-semibold text-white">
           📷 Tirar foto
           <input type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => escolherFoto(e.target.files?.[0])} />
         </label>
-        <label className="cursor-pointer rounded-xl bg-white p-3 text-center text-sm font-medium ring-1 ring-stone-200">
+        <label className="cursor-pointer rounded-xl bg-white p-3 text-center text-sm font-semibold ring-1 ring-stone-200">
           🖼️ Galeria
           <input type="file" accept="image/*" className="hidden" onChange={(e) => escolherFoto(e.target.files?.[0])} />
         </label>
@@ -186,8 +186,8 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
       {erro && <p className="text-sm text-red-600">{erro}</p>}
 
       <div className="grid grid-cols-2 gap-2">
-        <button type="button" onClick={aoCancelar} className="rounded-xl bg-white p-3 font-medium ring-1 ring-stone-200">Cancelar</button>
-        <button type="submit" disabled={salvando} className="rounded-xl bg-sky-500 p-3 font-medium text-white disabled:opacity-50">Salvar</button>
+        <button type="button" onClick={aoCancelar} className="rounded-xl bg-white p-3 font-semibold ring-1 ring-stone-200">Cancelar</button>
+        <button type="submit" disabled={salvando} className="rounded-xl bg-sky-500 p-3 font-semibold text-white disabled:opacity-50">Salvar</button>
       </div>
     </form>
   )

@@ -26,7 +26,7 @@ h1 {
 /* Campos de formulário com o mesmo ar dos cartões */
 select,
 input:not([type="checkbox"]):not([type="range"]) {
-  @apply rounded-xl border border-stone-300 bg-white px-3 py-2 outline-none;
+  @apply min-h-11 rounded-xl border border-stone-300 bg-white px-3 py-2 outline-none;
 }
 select:focus,
 input:focus-visible {
@@ -45,4 +45,16 @@ button {
 }
 .sem-barra::-webkit-scrollbar {
   display: none;
+}
+
+/* Sombras tingidas com o tom do app (nunca cinza puro sobre fundo colorido) */
+@utility sombra {
+  box-shadow:
+    0 1px 2px rgb(88 48 64 / 0.06),
+    0 8px 24px -8px rgb(88 48 64 / 0.16);
+}
+@utility sombra-alta {
+  box-shadow:
+    0 2px 4px rgb(88 48 64 / 0.08),
+    0 16px 32px -8px rgb(88 48 64 / 0.28);
 }

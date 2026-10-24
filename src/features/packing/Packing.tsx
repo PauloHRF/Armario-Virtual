@@ -4,6 +4,7 @@ import Chips from '../../shared/Chips'
 import FotoPeca from '../../shared/FotoPeca'
 import { listarPecas, listarViagens, removerViagem, salvarViagem } from '../../shared/storage'
 import { ESTACOES, type Estacao, type Peca, type Viagem } from '../../shared/types'
+import Vazio from '../../shared/Vazio'
 import { sugerirMala } from './sugerir'
 
 export default function Packing() {
@@ -74,6 +75,13 @@ export default function Packing() {
           </div>
           <p className="mt-1 text-sm text-stone-600">{feitas} de {ids.length} na mala</p>
         </div>
+        {ids.length > 0 && feitas === ids.length && (
+          <div className="mb-3 rounded-2xl bg-sky-500/10 p-4 text-center ring-1 ring-sky-500/20">
+            <p className="text-5xl" aria-hidden>🎉</p>
+            <p className="mt-2 font-display text-base font-semibold">Mala pronta!</p>
+            <p className="text-sm text-stone-600">Tudo separado para {aberta.nome}. Boa viagem!</p>
+          </div>
+        )}
 
         {ids.length === 0 && <p className="text-stone-500">Nenhuma peça na lista. Adicione abaixo ou refaça a sugestão.</p>}
         <ul className="grid grid-cols-2 gap-3">
@@ -81,7 +89,7 @@ export default function Packing() {
             const p = porId.get(id)!
             const pronta = aberta.empacotadas.includes(id)
             return (
-              <li key={id} className={`relative overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200 ${pronta ? 'opacity-60' : ''}`}>
+              <li key={id} className={`relative overflow-hidden rounded-2xl bg-white sombra ring-1 ring-stone-200 ${pronta ? 'opacity-60' : ''}`}>
                 <button onClick={() => alternar(aberta, id)} aria-pressed={pronta} className="block w-full text-left">
                   <div className="aspect-square bg-stone-100">
                     <FotoPeca foto={p.foto} className="size-full object-cover" />
@@ -98,10 +106,10 @@ export default function Packing() {
         </ul>
 
         <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
-          <button onClick={() => setAdicionando(!adicionando)} className="rounded-xl bg-white p-3 font-medium ring-1 ring-stone-200">+ Adicionar peça</button>
+          <button onClick={() => setAdicionando(!adicionando)} className="rounded-xl bg-white p-3 font-semibold ring-1 ring-stone-200">+ Adicionar peça</button>
           <button
             onClick={() => salvar({ ...aberta, pecaIds: sugerirMala(pecas, aberta.dias, aberta.estacao), empacotadas: [] })}
-            className="rounded-xl bg-white p-3 font-medium ring-1 ring-stone-200"
+            className="rounded-xl bg-white p-3 font-semibold ring-1 ring-stone-200"
           >
             Refazer sugestão
           </button>
@@ -138,7 +146,7 @@ export default function Packing() {
   return (
     <Tela titulo="Mala de viagem">
       {criando ? (
-        <div className="space-y-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-stone-200">
+        <div className="space-y-4 rounded-2xl bg-white p-4 sombra ring-1 ring-stone-200">
           <label className="block text-sm">
             Para onde vai?
             <input className="mt-1 w-full" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Ex.: Praia, fim de semana" />
@@ -150,21 +158,23 @@ export default function Packing() {
           <Chips titulo="Estação (opcional)" opcoes={ESTACOES} valor={estacao} aoMudar={setEstacao} />
           <p className="text-xs text-stone-500">Vamos sugerir as peças do seu armário. Você pode trocar tudo depois.</p>
           <div className="grid grid-cols-2 gap-2">
-            <button onClick={() => setCriando(false)} className="rounded-xl bg-white p-3 font-medium ring-1 ring-stone-200">Cancelar</button>
-            <button onClick={criar} className="rounded-xl bg-sky-500 p-3 font-medium text-white">Montar mala</button>
+            <button onClick={() => setCriando(false)} className="rounded-xl bg-white p-3 font-semibold ring-1 ring-stone-200">Cancelar</button>
+            <button onClick={criar} className="rounded-xl bg-sky-500 p-3 font-semibold text-white">Montar mala</button>
           </div>
         </div>
       ) : (
         <>
-          {viagens.length === 0 && <p className="text-stone-500">Nenhuma viagem ainda. Crie uma e receba uma sugestão do que levar.</p>}
+          {viagens.length === 0 && (
+            <Vazio emoji="🧳" titulo="Para onde vamos?" texto="Crie uma viagem e receba uma sugestão do que levar, com checklist para ir marcando." />
+          )}
           <ul className="space-y-3">
             {viagens.map((v) => {
               const ids = naLista(v)
               const feitas = ids.filter((id) => v.empacotadas.includes(id)).length
               return (
                 <li key={v.id}>
-                  <button onClick={() => setAbertaId(v.id)} className="w-full rounded-2xl bg-white p-4 text-left shadow-sm ring-1 ring-stone-200">
-                    <p className="font-display text-lg font-semibold">{v.nome}</p>
+                  <button onClick={() => setAbertaId(v.id)} className="w-full rounded-2xl bg-white p-4 text-left sombra ring-1 ring-stone-200">
+                    <p className="font-display text-base font-semibold">{v.nome}</p>
                     <p className="text-sm text-stone-500">
                       {v.dias} {v.dias === 1 ? 'dia' : 'dias'} · {feitas}/{ids.length} na mala
                     </p>
@@ -175,9 +185,9 @@ export default function Packing() {
           </ul>
           <button
             onClick={() => setCriando(true)}
-            className="fixed right-5 bottom-24 flex items-center gap-1.5 rounded-full bg-sky-500 px-5 py-3 font-medium text-white shadow-lg shadow-sky-500/30 active:scale-95"
+            className="fixed right-5 bottom-24 flex items-center gap-1.5 rounded-full bg-sky-500 px-5 py-3 font-semibold text-white sombra-alta active:scale-95"
           >
-            <span className="text-xl leading-none">+</span> Nova viagem
+            <span className="text-base leading-none">+</span> Nova viagem
           </button>
         </>
       )}

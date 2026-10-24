@@ -52,7 +52,7 @@ export default function Sizes() {
 
   return (
     <Tela titulo="Tamanhos">
-      <h2 className="mb-2 text-lg font-bold">Suas medidas</h2>
+      <h2 className="mb-2 font-display text-base font-semibold">Suas medidas</h2>
       <p className="mb-3 text-sm text-stone-500">Todas opcionais. Preencha o que souber.</p>
       <div className="grid grid-cols-2 gap-2">
         {CAMPOS.map((c) => (
@@ -71,7 +71,7 @@ export default function Sizes() {
         ))}
       </div>
 
-      <h2 className="mb-2 mt-6 text-lg font-bold">Seu tamanho por marca</h2>
+      <h2 className="mb-2 mt-6 font-display text-base font-semibold">Seu tamanho por marca</h2>
       <p className="mb-3 text-sm text-stone-500">O que você já sabe que serve, por marca ou loja.</p>
       <ul className="space-y-2">
         {marcas.map((m) => (
@@ -108,16 +108,16 @@ export default function Sizes() {
           setMarcas([...marcas, { id: crypto.randomUUID(), marca: '', tamanho: '' }])
           setSalvo(false)
         }}
-        className="mt-2 text-sm underline"
+        className="mt-2 min-h-11 text-sm underline"
       >
         + Adicionar marca
       </button>
 
-      <button onClick={salvarTudo} className="mt-6 w-full rounded-lg bg-stone-900 p-2 text-white">
+      <button onClick={salvarTudo} className="mt-6 min-h-12 w-full rounded-2xl bg-sky-500 font-semibold text-white sombra-alta">
         {salvo ? 'Salvo ✓' : 'Salvar'}
       </button>
 
-      <h2 className="mb-2 mt-8 text-lg font-bold">Seu tamanho em cada loja</h2>
+      <h2 className="mb-2 mt-8 font-display text-base font-semibold">Seu tamanho em cada loja</h2>
       {Object.keys(medidas).length === 0 && (
         <p className="text-sm text-stone-500">Informe peito, cintura ou pé para ver o tamanho em cada loja.</p>
       )}
@@ -126,7 +126,7 @@ export default function Sizes() {
           const t = tamanhosNaLoja(loja, medidas)
           return (
             <li key={loja.id} className="rounded-lg border border-stone-200 bg-white p-3">
-              <p className="font-medium">{loja.nome}</p>
+              <p className="font-semibold">{loja.nome}</p>
               <dl className="mt-1 grid grid-cols-3 gap-2 text-sm">
                 <div><dt className="text-stone-500">Camiseta</dt><dd>{t.camiseta}</dd></div>
                 <div><dt className="text-stone-500">Calça</dt><dd>{t.calca}</dd></div>
