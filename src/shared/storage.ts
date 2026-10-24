@@ -1,5 +1,5 @@
 import { get, set } from 'idb-keyval'
-import type { Combinacao, Medidas, Peca, TamanhoMarca } from './types'
+import type { Combinacao, LookMontado, Medidas, Peca, TamanhoMarca } from './types'
 
 const CHAVE_PECAS = 'pecas'
 
@@ -53,4 +53,22 @@ export async function listarTamanhosMarca(): Promise<TamanhoMarca[]> {
 
 export async function salvarTamanhosMarca(lista: TamanhoMarca[]): Promise<void> {
   await set(CHAVE_TAMANHOS_MARCA, lista)
+}
+
+const CHAVE_LOOKS = 'looksMontados'
+
+export async function listarLooks(): Promise<LookMontado[]> {
+  return (await get<LookMontado[]>(CHAVE_LOOKS)) ?? []
+}
+
+export async function salvarLook(look: LookMontado): Promise<void> {
+  const todos = await listarLooks()
+  const i = todos.findIndex((l) => l.id === look.id)
+  if (i >= 0) todos[i] = look
+  else todos.push(look)
+  await set(CHAVE_LOOKS, todos)
+}
+
+export async function removerLook(id: string): Promise<void> {
+  await set(CHAVE_LOOKS, (await listarLooks()).filter((l) => l.id !== id))
 }

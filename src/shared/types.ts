@@ -28,7 +28,7 @@ export type Peca = {
   estilo: Estilo
   marca: string
   tamanho: string
-  cadastradaEm: string // ISO
+    cadastradaEm: string // ISO
 }
 
 export type Combinacao = {
@@ -52,4 +52,24 @@ export type TamanhoMarca = {
   id: string
   marca: string
   tamanho: string
+}
+
+// Montador de looks: cada camada e uma peca ou um texto sobre o quadro.
+// x, y = centro (0..1 do quadro); tam = largura (peca) ou tamanho da fonte (texto), fracao da largura.
+export type Camada = {
+  id: string
+  pecaId?: string
+  texto?: string
+  x: number
+  y: number
+  tam: number
+  rot: number // graus
+}
+
+export type LookMontado = {
+  id: string
+  nome: string
+  fundo: string
+  camadas: Camada[] // a ultima fica por cima
+  criadoEm: string
 }
