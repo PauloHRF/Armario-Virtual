@@ -2,6 +2,7 @@ import type { ComponentType } from 'react'
 import Wardrobe from './features/wardrobe/Wardrobe'
 import Outfits from './features/outfits/Outfits'
 import Studio from './features/studio/Studio'
+import Diary from './features/diary/Diary'
 import Shopping from './features/shopping/Shopping'
 import Sizes from './features/sizes/Sizes'
 
@@ -18,6 +19,7 @@ export const features: Feature[] = [
   { id: 'armario', nome: 'Armário', rota: '/armario', icone: '👕', componente: Wardrobe },
   { id: 'combinacoes', nome: 'Looks', rota: '/combinacoes', icone: '✨', componente: Outfits },
   { id: 'montar', nome: 'Montar', rota: '/montar', icone: '🎨', componente: Studio },
+  { id: 'diario', nome: 'Diário', rota: '/diario', icone: '📅', componente: Diary },
   { id: 'comprar', nome: 'Comprar', rota: '/comprar', icone: '🛍️', componente: Shopping },
   { id: 'tamanhos', nome: 'Tamanhos', rota: '/tamanhos', icone: '📏', componente: Sizes },
 ]

@@ -72,3 +72,16 @@ export async function salvarLook(look: LookMontado): Promise<void> {
 export async function removerLook(id: string): Promise<void> {
   await set(CHAVE_LOOKS, (await listarLooks()).filter((l) => l.id !== id))
 }
+
+// Diário: dia (AAAA-MM-DD) -> id do look usado naquele dia.
+const CHAVE_DIARIO = 'diario'
+export type Diario = Record<string, string>
+
+export async function lerDiario(): Promise<Diario> {
+  return (await get<Diario>(CHAVE_DIARIO)) ?? {}
+}
+
+export async function definirDia(dia: string, lookId: string | null): Promise<void> {
+  const { [dia]: _, ...resto } = await lerDiario()
+  await set(CHAVE_DIARIO, lookId ? { ...resto, [dia]: lookId } : resto)
+}
