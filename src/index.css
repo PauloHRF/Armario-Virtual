@@ -12,6 +12,10 @@
   --color-stone-900: #12161d;
   --color-sky-500: #0f766e;
   --color-sky-600: #115e59;
+  --color-card: #ffffff;
+  --color-fill: #12161d;
+  --color-on-fill: #ffffff;
+  --color-acento: #115e59;
   --font-display: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -26,7 +30,7 @@ h1 {
 /* Campos de formulário com o mesmo ar dos cartões */
 select,
 input:not([type="checkbox"]):not([type="range"]) {
-  @apply min-h-11 rounded-xl border border-stone-300 bg-white px-3 py-2 outline-none;
+  @apply min-h-11 rounded-xl border border-stone-300 bg-card px-3 py-2 outline-none;
 }
 select:focus,
 input:focus-visible {
@@ -59,3 +63,22 @@ button {
     0 16px 32px -8px rgb(18 22 29 / 0.28);
 }
 
+/* Tema escuro: a escala stone vira a escala invertida, e os tokens semânticos trocam de valor. */
+:root {
+  color-scheme: light;
+}
+:root[data-tema="escuro"] {
+  color-scheme: dark;
+  --color-stone-50: #0e1218;
+  --color-stone-100: #1f2631;
+  --color-stone-200: #2a3341;
+  --color-stone-300: #3a4556;
+  --color-stone-400: #5a6578;
+  --color-stone-500: #8a94a6;
+  --color-stone-600: #aab3c2;
+  --color-stone-900: #e8ebf0;
+  --color-card: #171d26;
+  --color-fill: #e8ebf0;
+  --color-on-fill: #12161d;
+  --color-acento: #5eead4;
+}

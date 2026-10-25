@@ -10,7 +10,7 @@ const chaveDia = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).pad
 function Barras({ titulo, linhas }: { titulo: string; linhas: { nome: string; n: number; cor?: string }[] }) {
   const max = Math.max(1, ...linhas.map((l) => l.n))
   return (
-    <div className="rounded-2xl bg-white p-4 sombra ring-1 ring-stone-200">
+    <div className="rounded-2xl bg-card p-4 sombra ring-1 ring-stone-200">
       <h3 className="mb-2 font-display text-base font-semibold">{titulo}</h3>
       {linhas.length === 0 && <p className="text-sm text-stone-500">Sem dados ainda.</p>}
       <ul className="space-y-1.5">
@@ -85,7 +85,7 @@ export default function Diary() {
 
   return (
     <Tela titulo="Diário de looks">
-      <div className="rounded-2xl bg-white p-3 sombra ring-1 ring-stone-200">
+      <div className="rounded-2xl bg-card p-3 sombra ring-1 ring-stone-200">
         <div className="mb-2 flex items-center justify-between">
           <button aria-label="Mês anterior" onClick={() => setMes(new Date(mes.getFullYear(), mes.getMonth() - 1, 1))} className="size-11 rounded-full text-base hover:bg-stone-100">‹</button>
           <p className="font-display text-base font-semibold capitalize">{nomeMes}</p>
@@ -113,7 +113,7 @@ export default function Diary() {
       </div>
 
       {dia && (
-        <div className="mt-3 rounded-2xl bg-white p-4 sombra ring-1 ring-stone-200">
+        <div className="mt-3 rounded-2xl bg-card p-4 sombra ring-1 ring-stone-200">
           <p className="mb-2 font-semibold">Look de {dia.split('-').reverse().join('/')}</p>
           {looks.length === 0 ? (
             <p className="text-sm text-stone-500">Salve um look na aba Montar para registrá-lo aqui.</p>
@@ -124,7 +124,7 @@ export default function Diary() {
                   <button onClick={() => escolher(l.id)} className={`flex w-full items-center gap-2 rounded-xl p-2 text-left ${diario[dia] === l.id ? 'bg-stone-100' : ''}`}>
                     <span className="flex -space-x-3">
                       {pecasDoLook(l).slice(0, 3).map((p) => (
-                        <FotoPeca key={p.id} foto={p.foto} className="size-10 rounded-full bg-white object-cover ring-2 ring-white" />
+                        <FotoPeca key={p.id} foto={p.foto} className="size-10 rounded-full bg-card object-cover ring-2 ring-white" />
                       ))}
                     </span>
                     {l.nome}
@@ -148,7 +148,7 @@ export default function Diary() {
             [Object.keys(diario).length, 'dias com look'],
             [paradas.length, 'sem uso'],
           ].map(([n, t]) => (
-            <div key={t} className="rounded-2xl bg-white p-3 sombra ring-1 ring-stone-200">
+            <div key={t} className="rounded-2xl bg-card p-3 sombra ring-1 ring-stone-200">
               <p className="font-display text-[28px] leading-9 font-semibold">{n}</p>
               <p className="text-xs text-stone-500">{t}</p>
             </div>

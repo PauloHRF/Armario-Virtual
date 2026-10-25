@@ -18,7 +18,7 @@ const CAMPOS: { chave: keyof Medidas; nome: string; unidade: string }[] = [
   { chave: 'pe', nome: 'Pé (comprimento)', unidade: 'cm' },
 ]
 
-const campo = 'w-full rounded-lg border border-stone-300 bg-white p-2'
+const campo = 'w-full rounded-lg border border-stone-300 bg-card p-2'
 
 export default function Sizes() {
   // Os campos guardam texto; vazio = medida não informada.
@@ -84,7 +84,7 @@ export default function Sizes() {
               onChange={(e) => editarMarca(m.id, { marca: e.target.value })}
             />
             <input
-              className="w-24 rounded-lg border border-stone-300 bg-white p-2"
+              className="w-24 rounded-lg border border-stone-300 bg-card p-2"
               placeholder="Tam."
               aria-label="Tamanho"
               value={m.tamanho}
@@ -125,7 +125,7 @@ export default function Sizes() {
         {lojas.map((loja) => {
           const t = tamanhosNaLoja(loja, medidas)
           return (
-            <li key={loja.id} className="rounded-lg border border-stone-200 bg-white p-3">
+            <li key={loja.id} className="rounded-lg border border-stone-200 bg-card p-3">
               <p className="font-semibold">{loja.nome}</p>
               <dl className="mt-1 grid grid-cols-3 gap-2 text-sm">
                 <div><dt className="text-stone-500">Camiseta</dt><dd>{t.camiseta}</dd></div>

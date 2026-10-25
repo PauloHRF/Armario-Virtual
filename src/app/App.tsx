@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { features } from '../features'
 
@@ -26,11 +26,30 @@ function Icone({ id }: { id: string }) {
   )
 }
 
+type Tema = 'claro' | 'escuro'
+
+// Tema: o que a pessoa escolheu (guardado no aparelho) ou, na primeira vez, o do sistema.
+// O index.html aplica o mesmo valor antes do React carregar, para a tela não piscar.
+function useTema() {
+  const [tema, setTema] = useState<Tema>(() => (document.documentElement.dataset.tema === 'escuro' ? 'escuro' : 'claro'))
+  useEffect(() => {
+    document.documentElement.dataset.tema = tema
+    document.querySelector('meta[name=theme-color]')?.setAttribute('content', tema === 'escuro' ? '#0e1218' : '#f4f5f7')
+    try {
+      localStorage.setItem('tema', tema)
+    } catch {
+      // sem armazenamento (modo privado): o tema vale só nesta visita
+    }
+  }, [tema])
+  return [tema, setTema] as const
+}
+
 const aba = (ativa: boolean) =>
-  `flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-xs transition ${ativa ? 'font-semibold text-sky-500' : 'text-stone-500'}`
+  `flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-xs transition ${ativa ? 'font-semibold text-acento' : 'text-stone-500'}`
 
 export default function App() {
   const [mais, setMais] = useState(false)
+  const [tema, setTema] = useTema()
   const { pathname } = useLocation()
   const principais = features.filter((f) => PRINCIPAIS.includes(f.id))
   const outras = features.filter((f) => !PRINCIPAIS.includes(f.id))
@@ -38,10 +57,23 @@ export default function App() {
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-md flex-col">
-      <header className="sticky top-0 z-10 border-b border-stone-200/70 bg-stone-50/90 px-4 py-3 backdrop-blur">
+      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-stone-200/70 bg-stone-50/90 py-1 pr-1 pl-4 backdrop-blur">
         <p className="font-display text-base font-semibold tracking-wide uppercase">
-          Armário <span className="text-sky-500">Virtual</span>
+          Armário <span className="text-acento">Virtual</span>
         </p>
+        <button
+          onClick={() => setTema(tema === 'escuro' ? 'claro' : 'escuro')}
+          aria-label={tema === 'escuro' ? 'Usar tema claro' : 'Usar tema escuro'}
+          className="grid size-11 place-items-center rounded-full text-stone-600"
+        >
+          <svg viewBox="0 0 24 24" className="size-5" aria-hidden {...tracos}>
+            {tema === 'escuro' ? (
+              <path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" />
+            ) : (
+              <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
+            )}
+          </svg>
+        </button>
       </header>
       <main className="flex-1 p-4 pb-28">
         <Routes>
@@ -55,7 +87,7 @@ export default function App() {
       {mais && <button aria-label="Fechar menu" className="fixed inset-0 z-10 cursor-default bg-black/30" onClick={() => setMais(false)} />}
       <nav className="fixed inset-x-0 bottom-0 z-20 px-3 pb-3">
         {mais && (
-          <ul className="mx-auto mb-2 max-w-md rounded-2xl border border-stone-200 bg-white p-1 sombra-alta">
+          <ul className="mx-auto mb-2 max-w-md rounded-2xl border border-stone-200 bg-card p-1 sombra-alta">
             {outras.map((f) => (
               <li key={f.id}>
                 <NavLink
@@ -70,7 +102,7 @@ export default function App() {
             ))}
           </ul>
         )}
-        <ul className="mx-auto flex max-w-md rounded-2xl border border-stone-200 bg-white/95 p-1 sombra-alta backdrop-blur">
+        <ul className="mx-auto flex max-w-md rounded-2xl border border-stone-200 bg-card/95 p-1 sombra-alta backdrop-blur">
           {principais.map((f) => (
             <li key={f.id} className="flex-1">
               <NavLink to={f.rota} onClick={() => setMais(false)} className={({ isActive }) => aba(isActive)}>

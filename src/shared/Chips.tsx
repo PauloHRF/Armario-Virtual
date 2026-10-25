@@ -23,7 +23,7 @@ export default function Chips<T extends string>({ titulo, opcoes, valor, aoMudar
             type="button"
             aria-pressed={valor.includes(o)}
             onClick={() => alternar(o)}
-            className={`rounded-full min-h-11 px-4 transition ${valor.includes(o) ? 'bg-stone-900 text-white' : 'bg-white text-stone-600 ring-1 ring-stone-200'}`}
+            className={`rounded-full min-h-11 px-4 transition ${valor.includes(o) ? 'bg-fill text-on-fill' : 'bg-card text-stone-600 ring-1 ring-stone-200'}`}
           >
             {o}
           </button>
