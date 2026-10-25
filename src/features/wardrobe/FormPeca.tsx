@@ -101,12 +101,12 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
 
   return (
     <form onSubmit={enviar} className="space-y-4">
-      <h1 className="text-[28px] leading-9 font-semibold tracking-tight">{peca ? 'Editar peça' : 'Nova peça'}</h1>
+      <h1 className="text-titulo font-semibold tracking-tight">{peca ? 'Editar peça' : 'Nova peça'}</h1>
 
       {foto && (
         <div className="space-y-2">
           <div
-            className="aspect-4/5 overflow-hidden rounded-2xl sombra ring-1 ring-stone-200"
+            className="aspect-4/5 overflow-hidden rounded-2xl sombra"
             // xadrez cinza-claro: deixa a transparência visível depois do recorte
             style={original ? { background: 'repeating-conic-gradient(#e8decd 0 25%, #fff 0 50%) 0 0 / 20px 20px' } : undefined}
           >

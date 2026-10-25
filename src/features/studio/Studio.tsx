@@ -217,7 +217,7 @@ export default function Studio() {
       </div>
 
       {atual && (
-        <div className="mt-3 space-y-2 rounded-2xl bg-card p-4 text-sm sombra ring-1 ring-stone-200">
+        <div className="mt-3 space-y-2 rounded-2xl bg-card p-4 text-sm sombra">
           <label className="flex items-center gap-2">
             Tamanho
             <input
@@ -267,7 +267,7 @@ export default function Studio() {
         <button onClick={adicionarTexto} className="ml-auto whitespace-nowrap rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0 text-sm">+ Texto</button>
       </div>
 
-      <h2 className="mt-5 mb-2 font-display text-base font-semibold">Suas peças</h2>
+      <h2 className="mt-6 mb-2 font-display text-secao font-semibold">Suas peças</h2>
       {pecas.length === 0 ? (
         <p className="text-sm text-stone-500">Cadastre peças na aba Armário para montar looks.</p>
       ) : (
@@ -289,14 +289,14 @@ export default function Studio() {
           placeholder="Nome do look"
           className="min-w-0 flex-1"
         />
-        <button onClick={salvar} disabled={!visiveis.length} className="rounded-xl bg-sky-500 min-h-11 px-5 font-semibold text-white disabled:opacity-40">Salvar</button>
+        <button onClick={salvar} disabled={!visiveis.length} className="rounded-xl bg-sky-500 min-h-11 px-6 font-semibold text-white disabled:opacity-40">Salvar</button>
         <button onClick={baixar} disabled={!visiveis.length} className="rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0 disabled:opacity-40">PNG</button>
         <button onClick={novo} className="rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0">Novo</button>
       </div>
 
       {looks.length > 0 && (
         <>
-          <h2 className="mt-5 mb-2 font-display text-base font-semibold">Looks salvos</h2>
+          <h2 className="mt-6 mb-2 font-display text-secao font-semibold">Looks salvos</h2>
           <ul className="space-y-1">
             {looks.map((l) => (
               <li key={l.id} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-card min-h-11 px-4 text-sm">

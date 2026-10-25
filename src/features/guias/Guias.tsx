@@ -104,8 +104,8 @@ export default function Guias() {
       <ul className="space-y-3">
         {GUIAS.map((g) => (
           <li key={g.id}>
-            <Link to={`/guias/${g.id}`} className="flex min-h-20 items-center gap-4 rounded-2xl bg-card p-4 sombra ring-1 ring-stone-200 transition active:scale-[0.98]">
-              <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-sky-500/10 text-2xl" aria-hidden>{g.emoji}</span>
+            <Link to={`/guias/${g.id}`} className="flex min-h-20 items-center gap-4 rounded-2xl bg-card p-4 sombra transition active:scale-[0.98]">
+              <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-marca-50 text-2xl" aria-hidden>{g.emoji}</span>
               <span className="min-w-0 flex-1">
                 <span className="block font-semibold">{g.titulo}</span>
                 <span className="block text-sm text-stone-600">{g.resumo}</span>
@@ -138,7 +138,7 @@ export function GuiaPagina() {
       <p className="mb-4 text-sm text-stone-600">{guia.resumo}.</p>
 
       {id === 'rosto' && (
-        <div className="space-y-4 rounded-2xl bg-card p-4 sombra ring-1 ring-stone-200">
+        <div className="space-y-4 rounded-2xl bg-card p-4 sombra">
           <Chips titulo="Qual é o seu formato de rosto?" opcoes={Object.keys(ROSTOS) as (keyof typeof ROSTOS)[]} valor={rosto} aoMudar={setRosto} />
           {r ? (
             <div className="space-y-3 text-sm text-stone-600">
@@ -152,14 +152,14 @@ export function GuiaPagina() {
       )}
 
       {id === 'cores' && (
-        <div className="space-y-4 rounded-2xl bg-card p-4 sombra ring-1 ring-stone-200">
+        <div className="space-y-4 rounded-2xl bg-card p-4 sombra">
           <Chips titulo="Qual é o seu subtom?" opcoes={Object.keys(SUBTONS) as (keyof typeof SUBTONS)[]} valor={subtom} aoMudar={setSubtom} />
           {s ? (
             <div className="space-y-3 text-sm text-stone-600">
               <p>{s.sinais}</p>
               <div className="flex flex-wrap gap-2" aria-label="Cores sugeridas">
                 {s.cores.map((nome) => (
-                  <span key={nome} className="flex items-center gap-1.5 rounded-full bg-stone-100 py-1 pr-3 pl-1.5 text-xs capitalize">
+                  <span key={nome} className="flex items-center gap-2 rounded-full bg-stone-100 py-1 pr-3 pl-2 text-xs capitalize">
                     <span className="size-5 rounded-full ring-1 ring-stone-300" style={{ background: CORES.find((c) => c.nome === nome)?.hex }} />
                     {nome}
                   </span>
@@ -176,15 +176,15 @@ export function GuiaPagina() {
       {regras && (
         <ul className="space-y-3">
           {regras.itens.map((item, n) => (
-            <li key={item} className="flex gap-3 rounded-2xl bg-card p-4 text-sm sombra ring-1 ring-stone-200">
-              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-sky-500/10 text-xs font-semibold text-acento">{n + 1}</span>
+            <li key={item} className="flex gap-3 rounded-2xl bg-card p-4 text-sm sombra">
+              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-marca-50 text-xs font-semibold text-acento">{n + 1}</span>
               <span className="text-stone-700">{item}</span>
             </li>
           ))}
         </ul>
       )}
 
-      <Link to={`/guias/${proximo.id}`} className="mt-6 flex min-h-14 items-center justify-between rounded-2xl bg-fill px-5 font-semibold text-on-fill sombra-alta">
+      <Link to={`/guias/${proximo.id}`} className="mt-6 flex min-h-14 items-center justify-between rounded-2xl bg-fill px-6 font-semibold text-on-fill sombra-alta">
         <span>Próximo: {proximo.titulo}</span>
         <span aria-hidden>›</span>
       </Link>

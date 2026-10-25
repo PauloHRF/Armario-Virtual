@@ -76,9 +76,9 @@ export default function Packing() {
           <p className="mt-1 text-sm text-stone-600">{feitas} de {ids.length} na mala</p>
         </div>
         {ids.length > 0 && feitas === ids.length && (
-          <div className="mb-3 rounded-2xl bg-sky-500/10 p-4 text-center ring-1 ring-sky-500/20">
+          <div className="mb-3 rounded-2xl bg-marca-50 p-4 text-center ring-1 ring-marca-200">
             <p className="text-5xl" aria-hidden>🎉</p>
-            <p className="mt-2 font-display text-base font-semibold">Mala pronta!</p>
+            <p className="mt-2 font-display text-secao font-semibold">Mala pronta!</p>
             <p className="text-sm text-stone-600">Tudo separado para {aberta.nome}. Boa viagem!</p>
           </div>
         )}
@@ -89,7 +89,7 @@ export default function Packing() {
             const p = porId.get(id)!
             const pronta = aberta.empacotadas.includes(id)
             return (
-              <li key={id} className={`relative overflow-hidden rounded-2xl bg-card sombra ring-1 ring-stone-200 ${pronta ? 'opacity-60' : ''}`}>
+              <li key={id} className={`relative overflow-hidden rounded-2xl bg-card sombra ${pronta ? 'opacity-60' : ''}`}>
                 <button onClick={() => alternar(aberta, id)} aria-pressed={pronta} className="block w-full text-left">
                   <div className="aspect-square bg-stone-100">
                     <FotoPeca foto={p.foto} className="size-full object-cover" />
@@ -146,7 +146,7 @@ export default function Packing() {
   return (
     <Tela titulo="Mala de viagem">
       {criando ? (
-        <div className="space-y-4 rounded-2xl bg-card p-4 sombra ring-1 ring-stone-200">
+        <div className="space-y-4 rounded-2xl bg-card p-4 sombra">
           <label className="block text-sm">
             Para onde vai?
             <input className="mt-1 w-full" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Ex.: Praia, fim de semana" />
@@ -173,8 +173,8 @@ export default function Packing() {
               const feitas = ids.filter((id) => v.empacotadas.includes(id)).length
               return (
                 <li key={v.id}>
-                  <button onClick={() => setAbertaId(v.id)} className="w-full rounded-2xl bg-card p-4 text-left sombra ring-1 ring-stone-200">
-                    <p className="font-display text-base font-semibold">{v.nome}</p>
+                  <button onClick={() => setAbertaId(v.id)} className="w-full rounded-2xl bg-card p-4 text-left sombra">
+                    <p className="font-display text-secao font-semibold">{v.nome}</p>
                     <p className="text-sm text-stone-500">
                       {v.dias} {v.dias === 1 ? 'dia' : 'dias'} · {feitas}/{ids.length} na mala
                     </p>
@@ -185,7 +185,7 @@ export default function Packing() {
           </ul>
           <button
             onClick={() => setCriando(true)}
-            className="fixed right-5 bottom-24 flex items-center gap-1.5 rounded-full bg-sky-500 px-5 py-3 font-semibold text-white sombra-alta active:scale-95"
+            className="fixed right-5 bottom-24 flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 font-semibold text-white sombra-alta active:scale-95"
           >
             <span className="text-base leading-none">+</span> Nova viagem
           </button>

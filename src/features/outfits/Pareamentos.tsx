@@ -55,7 +55,7 @@ export default function Pareamentos({ pecas }: { pecas: Peca[] }) {
           )}
           {PAPEIS.filter(({ papel }) => pares[papel].length > 0).map(({ papel, titulo }) => (
             <section key={papel}>
-              <h2 className="mb-2 font-display text-base font-semibold">{titulo}</h2>
+              <h2 className="mb-2 font-display text-secao font-semibold">{titulo}</h2>
               <ul className="grid grid-cols-2 gap-3">
                 {pares[papel].map(({ peca, motivo }) => {
                   const marcada = escolhidas.includes(peca.id)

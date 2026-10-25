@@ -52,7 +52,7 @@ export default function Sizes() {
 
   return (
     <Tela titulo="Tamanhos">
-      <h2 className="mb-2 font-display text-base font-semibold">Suas medidas</h2>
+      <h2 className="mb-2 font-display text-secao font-semibold">Suas medidas</h2>
       <p className="mb-3 text-sm text-stone-500">Todas opcionais. Preencha o que souber.</p>
       <div className="grid grid-cols-2 gap-2">
         {CAMPOS.map((c) => (
@@ -71,7 +71,7 @@ export default function Sizes() {
         ))}
       </div>
 
-      <h2 className="mb-2 mt-6 font-display text-base font-semibold">Seu tamanho por marca</h2>
+      <h2 className="mb-2 mt-6 font-display text-secao font-semibold">Seu tamanho por marca</h2>
       <p className="mb-3 text-sm text-stone-500">O que você já sabe que serve, por marca ou loja.</p>
       <ul className="space-y-2">
         {marcas.map((m) => (
@@ -117,7 +117,7 @@ export default function Sizes() {
         {salvo ? 'Salvo ✓' : 'Salvar'}
       </button>
 
-      <h2 className="mb-2 mt-8 font-display text-base font-semibold">Seu tamanho em cada loja</h2>
+      <h2 className="mb-2 mt-8 font-display text-secao font-semibold">Seu tamanho em cada loja</h2>
       {Object.keys(medidas).length === 0 && (
         <p className="text-sm text-stone-500">Informe peito, cintura ou pé para ver o tamanho em cada loja.</p>
       )}

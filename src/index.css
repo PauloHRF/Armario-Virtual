@@ -7,7 +7,7 @@
   --color-stone-200: #dde0e7;
   --color-stone-300: #c3c8d2;
   --color-stone-400: #9aa1af;
-  --color-stone-500: #6b7383;
+  --color-stone-500: #646c7c;
   --color-stone-600: #4d5463;
   --color-stone-900: #12161d;
   --color-sky-500: #0f766e;
@@ -16,6 +16,20 @@
   --color-fill: #12161d;
   --color-on-fill: #ffffff;
   --color-acento: #115e59;
+  --text-titulo: 1.75rem;
+  --text-titulo--line-height: 2.25rem;
+  --text-secao: 1.125rem;
+  --text-secao--line-height: 1.5rem;
+  --color-marca-50: #f0fdfa;
+  --color-marca-100: #ccfbf1;
+  --color-marca-200: #99f6e4;
+  --color-marca-300: #5eead4;
+  --color-marca-400: #2dd4bf;
+  --color-marca-500: #14b8a6;
+  --color-marca-600: #0d9488;
+  --color-marca-700: #0f766e;
+  --color-marca-800: #115e59;
+  --color-marca-900: #134e4a;
   --font-display: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -73,7 +87,7 @@ button {
   --color-stone-100: #1f2631;
   --color-stone-200: #2a3341;
   --color-stone-300: #3a4556;
-  --color-stone-400: #5a6578;
+  --color-stone-400: #6b788e;
   --color-stone-500: #8a94a6;
   --color-stone-600: #aab3c2;
   --color-stone-900: #e8ebf0;
@@ -81,4 +95,7 @@ button {
   --color-fill: #e8ebf0;
   --color-on-fill: #12161d;
   --color-acento: #5eead4;
+  --color-marca-50: #0b2220;
+  --color-marca-100: #0f2f2c;
+  --color-marca-200: #134e4a;
 }

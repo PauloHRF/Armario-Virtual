@@ -60,7 +60,7 @@ function Formulario({ desejo, aoSalvar, aoCancelar, aoExcluir }: {
 
   return (
     <form onSubmit={enviar} className="space-y-4">
-      <h1 className="text-[28px] leading-9 font-semibold tracking-tight">{desejo ? 'Editar desejo' : 'Novo desejo'}</h1>
+      <h1 className="text-titulo font-semibold tracking-tight">{desejo ? 'Editar desejo' : 'Novo desejo'}</h1>
       {foto && <FotoPeca foto={foto} className="mx-auto aspect-square w-48 rounded-2xl bg-stone-100 object-cover ring-1 ring-stone-200" />}
       <label className="block cursor-pointer rounded-xl bg-card p-3 text-center text-sm font-semibold ring-1 ring-stone-200">
         🖼️ {foto ? 'Trocar foto' : 'Adicionar foto'}
@@ -215,7 +215,7 @@ export default function Desejos({ aoEditar }: { aoEditar: (editando: boolean) =>
           </p>
           <ul className="space-y-3">
             {ordenados.map((d) => (
-              <li key={d.id} className="flex gap-3 rounded-2xl bg-card p-3 sombra ring-1 ring-stone-200">
+              <li key={d.id} className="flex gap-3 rounded-2xl bg-card p-3 sombra">
                 <button onClick={() => setEditando(d)} aria-label={`Editar ${d.nome}`} className="shrink-0">
                   <FotoPeca foto={d.foto} className="size-24 rounded-xl bg-stone-100 object-cover" />
                 </button>
@@ -237,7 +237,7 @@ export default function Desejos({ aoEditar }: { aoEditar: (editando: boolean) =>
           </ul>
           <button
             onClick={() => setEditando('novo')}
-            className="fixed right-5 bottom-24 flex items-center gap-1.5 rounded-full bg-sky-500 px-5 py-3 font-semibold text-white sombra-alta transition active:scale-95"
+            className="fixed right-5 bottom-24 flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 font-semibold text-white sombra-alta transition active:scale-95"
           >
             <span className="text-base leading-none">+</span> Novo desejo
           </button>

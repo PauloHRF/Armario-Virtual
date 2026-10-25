@@ -10,10 +10,10 @@ const chaveDia = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).pad
 function Barras({ titulo, linhas }: { titulo: string; linhas: { nome: string; n: number; cor?: string }[] }) {
   const max = Math.max(1, ...linhas.map((l) => l.n))
   return (
-    <div className="rounded-2xl bg-card p-4 sombra ring-1 ring-stone-200">
-      <h3 className="mb-2 font-display text-base font-semibold">{titulo}</h3>
+    <div className="rounded-2xl bg-card p-4 sombra">
+      <h3 className="mb-2 font-display text-secao font-semibold">{titulo}</h3>
       {linhas.length === 0 && <p className="text-sm text-stone-500">Sem dados ainda.</p>}
-      <ul className="space-y-1.5">
+      <ul className="space-y-2">
         {linhas.map((l) => (
           <li key={l.nome} className="flex items-center gap-2 text-sm">
             <span className="w-24 shrink-0 truncate capitalize">{l.nome}</span>
@@ -85,10 +85,10 @@ export default function Diary() {
 
   return (
     <Tela titulo="Diário de looks">
-      <div className="rounded-2xl bg-card p-3 sombra ring-1 ring-stone-200">
+      <div className="rounded-2xl bg-card p-3 sombra">
         <div className="mb-2 flex items-center justify-between">
           <button aria-label="Mês anterior" onClick={() => setMes(new Date(mes.getFullYear(), mes.getMonth() - 1, 1))} className="size-11 rounded-full text-base hover:bg-stone-100">‹</button>
-          <p className="font-display text-base font-semibold capitalize">{nomeMes}</p>
+          <p className="font-display text-secao font-semibold capitalize">{nomeMes}</p>
           <button aria-label="Próximo mês" onClick={() => setMes(new Date(mes.getFullYear(), mes.getMonth() + 1, 1))} className="size-11 rounded-full text-base hover:bg-stone-100">›</button>
         </div>
         <div className="grid grid-cols-7 gap-1 text-center text-xs text-stone-500">
@@ -113,7 +113,7 @@ export default function Diary() {
       </div>
 
       {dia && (
-        <div className="mt-3 rounded-2xl bg-card p-4 sombra ring-1 ring-stone-200">
+        <div className="mt-3 rounded-2xl bg-card p-4 sombra">
           <p className="mb-2 font-semibold">Look de {dia.split('-').reverse().join('/')}</p>
           {looks.length === 0 ? (
             <p className="text-sm text-stone-500">Salve um look na aba Montar para registrá-lo aqui.</p>
@@ -140,7 +140,7 @@ export default function Diary() {
         </div>
       )}
 
-      <h2 className="mt-6 mb-2 font-display text-base font-semibold">Estatísticas</h2>
+      <h2 className="mt-6 mb-2 font-display text-secao font-semibold">Estatísticas</h2>
       <div className="space-y-3">
         <div className="grid grid-cols-3 gap-2 text-center">
           {[
@@ -148,8 +148,8 @@ export default function Diary() {
             [Object.keys(diario).length, 'dias com look'],
             [paradas.length, 'sem uso'],
           ].map(([n, t]) => (
-            <div key={t} className="rounded-2xl bg-card p-3 sombra ring-1 ring-stone-200">
-              <p className="font-display text-[28px] leading-9 font-semibold">{n}</p>
+            <div key={t} className="rounded-2xl bg-card p-3 sombra">
+              <p className="font-display text-titulo font-semibold">{n}</p>
               <p className="text-xs text-stone-500">{t}</p>
             </div>
           ))}
