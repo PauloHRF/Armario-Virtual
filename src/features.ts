@@ -8,6 +8,7 @@ import Perfumes from './features/perfumes/Perfumes'
 import Guias from './features/guias/Guias'
 import Shopping from './features/shopping/Shopping'
 import Sizes from './features/sizes/Sizes'
+import Backup from './features/backup/Backup'
 
 export type Feature = {
   id: string
@@ -28,4 +29,5 @@ export const features: Feature[] = [
   { id: 'guias', nome: 'Guias', rota: '/guias', icone: '📖', componente: Guias },
   { id: 'comprar', nome: 'Comprar', rota: '/comprar', icone: '🛍️', componente: Shopping },
   { id: 'tamanhos', nome: 'Tamanhos', rota: '/tamanhos', icone: '📏', componente: Sizes },
+  { id: 'backup', nome: 'Backup', rota: '/backup', icone: '💾', componente: Backup },
 ]
