@@ -18,6 +18,7 @@ const ICONES: Record<string, ReactNode> = {
   perfumes: <path d="M9 3h6v3H9V3Zm-2 3h10a1 1 0 0 1 1 1v3H6V7a1 1 0 0 1 1-1Zm-1 4h12v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-9Zm6 3v4" />,
   guias: <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5v-15ZM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5v-15Z" />,
   comprar: <path d="M6 8h12l-1 12H7L6 8Zm3 0V7a3 3 0 0 1 6 0v1" />,
+  backup: <path d="M12 4v10m0 0-3.5-3.5M12 14l3.5-3.5M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" />,
   tamanhos: <path d="M3 9h18v6H3V9Zm4 0v3m4-3v2m4-2v3m4-3v2" />,
 }
 
