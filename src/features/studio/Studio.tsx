@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { papelDe, type Papel } from '../outfits/pareamento'
 import Tela from '../../shared/Tela'
 import FotoPeca from '../../shared/FotoPeca'
 import { listarLooks, listarPecas, removerLook, salvarLook } from '../../shared/storage'
@@ -7,8 +8,7 @@ import type { Camada, LookMontado, Peca } from '../../shared/types'
 import Aviso from '../../shared/Aviso'
 import { exportarPng } from './exportar'
 
-const FUNDOS = ['#ffffff', '#f5f5f4', '#fde68a', '#fbcfe8', '#bfdbfe', '#bbf7d0', '#292524']
-const FIGURINHAS = ['⭐', '💖', '✨', '🌸', '🔥', '☀️', '🌙', '🎀', '👑', '💎', '🌈', '🍒']
+const FUNDOS = ['#ffffff', '#e5e7eb', '#cbd5e1', '#bfdbfe', '#bbf7d0', '#334155', '#0b0f14']
 const limitar = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v))
 
 export default function Studio() {
@@ -31,19 +31,30 @@ export default function Studio() {
     carregar()
   }, [])
 
-  // Vindo de "Abrir no Montar": monta o look com as peças em pilha (cima, baixo, calçado).
+  // Vindo de "Abrir no Montar": monta o look com as peças no lugar de cada tipo.
   const { state } = useLocation()
   useEffect(() => {
     const ids: string[] | undefined = state?.pecaIds
     if (!ids?.length) return
-    const alvo = [
-      { y: 0.27, tam: 0.46 },
-      { y: 0.6, tam: 0.4 },
-      { y: 0.86, tam: 0.26 },
-    ]
-    setCamadas(ids.map((pecaId, i) => ({ id: crypto.randomUUID(), pecaId, x: 0.5, rot: 0, ...alvo[Math.min(i, 2)] })))
-    setSel(null)
     history.replaceState({}, '') // recarregar a página não refaz a montagem
+    // posição por tipo de peça; o agasalho fica por cima da camiseta e o acessório ao lado
+    const lugar: Record<Papel, { x: number; y: number; tam: number }> = {
+      cima: { x: 0.5, y: 0.27, tam: 0.46 },
+      agasalho: { x: 0.5, y: 0.3, tam: 0.5 },
+      baixo: { x: 0.5, y: 0.6, tam: 0.4 },
+      calçado: { x: 0.5, y: 0.86, tam: 0.26 },
+      acessório: { x: 0.82, y: 0.56, tam: 0.16 },
+    }
+    const ordem: Papel[] = ['baixo', 'calçado', 'cima', 'agasalho', 'acessório'] // a última fica por cima
+    listarPecas().then((todas) => {
+      const achadas = ids.flatMap((id) => todas.filter((p) => p.id === id))
+      setCamadas(
+        achadas
+          .sort((a, b) => ordem.indexOf(papelDe(a)) - ordem.indexOf(papelDe(b)))
+          .map((p) => ({ id: crypto.randomUUID(), pecaId: p.id, rot: 0, ...lugar[papelDe(p)] })),
+      )
+      setSel(null)
+    })
   }, [state])
 
   const porId = useMemo(() => new Map(pecas.map((p) => [p.id, p])), [pecas])
@@ -193,7 +204,7 @@ export default function Studio() {
               {peca ? (
                 <FotoPeca foto={peca.foto} className="pointer-events-none w-full" />
               ) : (
-                <span className="pointer-events-none block font-semibold whitespace-nowrap text-stone-900">{c.texto}</span>
+                <span className="pointer-events-none block font-semibold whitespace-nowrap text-[#111]">{c.texto}</span>
               )}
             </div>
           )
@@ -206,7 +217,7 @@ export default function Studio() {
       </div>
 
       {atual && (
-        <div className="mt-3 space-y-2 rounded-2xl bg-white p-4 text-sm sombra ring-1 ring-stone-200">
+        <div className="mt-3 space-y-2 rounded-2xl bg-card p-4 text-sm sombra ring-1 ring-stone-200">
           <label className="flex items-center gap-2">
             Tamanho
             <input
@@ -231,10 +242,10 @@ export default function Studio() {
             />
           </label>
           <div className="flex flex-wrap gap-2">
-            <button onClick={() => alterar(atual.id, { espelho: !atual.espelho })} className="rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0">Espelhar</button>
-            <button onClick={paraTras} className="rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0">Para trás</button>
-            <button onClick={duplicar} className="rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0">Duplicar</button>
-            <button onClick={remover} className="rounded-xl bg-white min-h-11 px-4 text-red-700 ring-1 ring-red-200">Remover</button>
+            <button onClick={() => alterar(atual.id, { espelho: !atual.espelho })} className="rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0">Espelhar</button>
+            <button onClick={paraTras} className="rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0">Para trás</button>
+            <button onClick={duplicar} className="rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0">Duplicar</button>
+            <button onClick={remover} className="rounded-xl bg-card min-h-11 px-4 text-red-700 ring-1 ring-red-200">Remover</button>
           </div>
         </div>
       )}
@@ -248,21 +259,13 @@ export default function Studio() {
             className="grid size-11 place-items-center"
           >
             <span
-              className={`size-7 rounded-full border ${f === fundo ? 'ring-2 ring-sky-500 ring-offset-2' : 'border-stone-300'}`}
+              className={`size-7 rounded-full border ${f === fundo ? 'ring-2 ring-sky-500 ring-offset-2 ring-offset-stone-50' : 'border-stone-300'}`}
               style={{ background: f }}
             />
           </button>
         ))}
-        <button onClick={adicionarTexto} className="ml-auto rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0 text-sm">+ Texto</button>
+        <button onClick={adicionarTexto} className="ml-auto whitespace-nowrap rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0 text-sm">+ Texto</button>
       </div>
-
-      <ul className="sem-barra mt-3 flex gap-1 overflow-x-auto pb-1 text-[28px]">
-        {FIGURINHAS.map((f) => (
-          <li key={f}>
-            <button aria-label={`Figurinha ${f}`} onClick={() => adicionar({ texto: f, tam: 0.15 })} className="rounded-xl p-1.5 hover:bg-stone-100">{f}</button>
-          </li>
-        ))}
-      </ul>
 
       <h2 className="mt-5 mb-2 font-display text-base font-semibold">Suas peças</h2>
       {pecas.length === 0 ? (
@@ -272,7 +275,7 @@ export default function Studio() {
           {pecas.map((p) => (
             <li key={p.id} className="shrink-0">
               <button onClick={() => adicionar({ pecaId: p.id })}>
-                <FotoPeca foto={p.foto} className="size-20 rounded-xl bg-white object-contain p-1 ring-1 ring-stone-200" />
+                <FotoPeca foto={p.foto} className="size-20 rounded-xl bg-card object-contain p-1 ring-1 ring-stone-200" />
               </button>
             </li>
           ))}
@@ -287,8 +290,8 @@ export default function Studio() {
           className="min-w-0 flex-1"
         />
         <button onClick={salvar} disabled={!visiveis.length} className="rounded-xl bg-sky-500 min-h-11 px-5 font-semibold text-white disabled:opacity-40">Salvar</button>
-        <button onClick={baixar} disabled={!visiveis.length} className="rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0 disabled:opacity-40">PNG</button>
-        <button onClick={novo} className="rounded-xl bg-white min-h-11 px-4 ring-1 ring-stone-200 border-0">Novo</button>
+        <button onClick={baixar} disabled={!visiveis.length} className="rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0 disabled:opacity-40">PNG</button>
+        <button onClick={novo} className="rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0">Novo</button>
       </div>
 
       {looks.length > 0 && (
@@ -296,7 +299,7 @@ export default function Studio() {
           <h2 className="mt-5 mb-2 font-display text-base font-semibold">Looks salvos</h2>
           <ul className="space-y-1">
             {looks.map((l) => (
-              <li key={l.id} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white min-h-11 px-4 text-sm">
+              <li key={l.id} className="flex items-center gap-2 rounded-xl border border-stone-200 bg-card min-h-11 px-4 text-sm">
                 <button onClick={() => abrir(l)} className="flex-1 text-left">{l.nome}</button>
                 <button
                   onClick={async () => {
@@ -312,7 +315,7 @@ export default function Studio() {
           </ul>
         </>
       )}
-      <Aviso mensagem="Look salvo ✨" chave={avisos} />
+      <Aviso mensagem="Look salvo ✓" chave={avisos} />
     </Tela>
   )
 }

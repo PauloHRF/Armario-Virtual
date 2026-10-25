@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Chips from '../../shared/Chips'
 import Vazio from '../../shared/Vazio'
+import Pareamentos from './Pareamentos'
 import Tela from '../../shared/Tela'
 import FotoPeca from '../../shared/FotoPeca'
 import {
@@ -34,6 +35,7 @@ export default function Outfits() {
   const [estacao, setEstacao] = useState<Estacao[]>([])
   const [ocasiao, setOcasiao] = useState<Ocasiao[]>([])
   const navegar = useNavigate()
+  const [modo, setModo] = useState<'sugestoes' | 'pareamentos'>('sugestoes')
 
   async function carregar() {
     const [p, s] = await Promise.all([listarPecas(), listarCombinacoes()])
@@ -83,6 +85,24 @@ export default function Outfits() {
 
   return (
     <Tela titulo="Combinações">
+      <div role="tablist" className="mb-4 grid grid-cols-2 rounded-2xl bg-stone-100 p-1 text-sm font-semibold">
+        {([['sugestoes', 'Sugestões'], ['pareamentos', 'Pareamentos']] as const).map(([id, nome]) => (
+          <button
+            key={id}
+            role="tab"
+            aria-selected={modo === id}
+            onClick={() => setModo(id)}
+            className={`min-h-11 rounded-xl transition ${modo === id ? 'bg-card sombra' : 'text-stone-500'}`}
+          >
+            {nome}
+          </button>
+        ))}
+      </div>
+
+      {modo === 'pareamentos' ? (
+        <Pareamentos pecas={pecas} />
+      ) : (
+        <>
       <div className="mb-4 space-y-3">
         <Chips titulo="Estação" opcoes={ESTACOES} valor={estacao} aoMudar={(v) => (setEstacao(v), setInicio(0))} />
         <Chips titulo="Ocasião" opcoes={OCASIOES} valor={ocasiao} aoMudar={(v) => (setOcasiao(v), setInicio(0))} />
@@ -90,7 +110,7 @@ export default function Outfits() {
 
       {carregou && visiveis.length === 0 && (
         <Vazio
-          emoji="✨"
+          emoji="👔"
           titulo={estacao.length || ocasiao.length ? 'Sem combinações para isso' : 'Vamos montar seus looks'}
           texto={
             estacao.length || ocasiao.length
@@ -111,20 +131,20 @@ export default function Outfits() {
 
       <ul className="space-y-4">
         {visiveis.map((l) => (
-          <li key={idDoLook(l)} className="rounded-2xl bg-white p-3 sombra ring-1 ring-stone-200">
+          <li key={idDoLook(l)} className="rounded-2xl bg-card p-3 sombra ring-1 ring-stone-200">
             <Fotos pecas={[l.cima, l.baixo, l.calcado]} />
             <p className="mt-2 text-sm">{l.explicacao}</p>
             <div className="mt-2 grid grid-cols-2 gap-2">
               <button
                 onClick={() => salvar(l)}
                 disabled={ehSalvo(l)}
-                className="min-h-11 rounded-xl bg-white p-2 text-sm font-semibold ring-1 ring-stone-200 disabled:text-stone-400"
+                className="min-h-11 rounded-xl bg-card p-2 text-sm font-semibold ring-1 ring-stone-200 disabled:text-stone-400"
               >
                 {ehSalvo(l) ? 'Salva ✓' : 'Salvar'}
               </button>
               <button
                 onClick={() => navegar('/montar', { state: { pecaIds: [l.cima.id, l.baixo.id, l.calcado.id] } })}
-                className="min-h-11 rounded-xl bg-stone-900 p-2 text-sm font-semibold text-white"
+                className="min-h-11 rounded-xl bg-fill p-2 text-sm font-semibold text-on-fill"
               >
                 Abrir no Montar
               </button>
@@ -144,7 +164,7 @@ export default function Outfits() {
           <h2 className="mb-2 mt-8 font-display text-base font-semibold">Salvas</h2>
           <ul className="space-y-3">
             {salvasValidas.map(({ s, partes }) => (
-              <li key={s.id} className="rounded-2xl bg-white p-3 sombra ring-1 ring-stone-200">
+              <li key={s.id} className="rounded-2xl bg-card p-3 sombra ring-1 ring-stone-200">
                 <Fotos pecas={partes} />
                 <div className="mt-2 flex gap-4 text-sm">
                   <button onClick={() => navegar('/montar', { state: { pecaIds: s.pecaIds } })} className="font-semibold">Abrir no Montar</button>
@@ -153,6 +173,8 @@ export default function Outfits() {
               </li>
             ))}
           </ul>
+        </>
+      )}
         </>
       )}
     </Tela>
