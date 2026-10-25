@@ -167,13 +167,13 @@ export default function Perfumes() {
             <Chips titulo="Ocasião" opcoes={OCASIOES} valor={ocasiao} aoMudar={setOcasiao} />
             {melhor ? (
               <div className="rounded-xl bg-marca-50 p-3">
-                <p className="text-xs text-stone-600">Sugestão</p>
+                <p className="text-xs text-acento">Sugestão</p>
                 <p className="font-display text-secao font-semibold">{melhor.perfume.nome}{melhor.perfume.marca && ` · ${melhor.perfume.marca}`}</p>
-                <p className="mt-1 text-sm text-stone-600 first-letter:uppercase">{melhor.motivos.join(' · ')}</p>
+                <p className="mt-1 text-sm text-acento first-letter:uppercase">{melhor.motivos.join(' · ')}</p>
                 <button onClick={() => usarHoje(melhor.perfume)} disabled={melhor.perfume.usos.includes(hoje)} className="mt-3 min-h-11 w-full rounded-xl bg-sky-500 font-semibold text-white disabled:opacity-50">
                   {melhor.perfume.usos.includes(hoje) ? 'Já usado hoje ✓' : 'Vou usar este'}
                 </button>
-                {outras.length > 0 && <p className="mt-2 text-xs text-stone-500">Outras opções: {outras.slice(0, 3).map((s) => s.perfume.nome).join(', ')}</p>}
+                {outras.length > 0 && <p className="mt-2 text-xs text-acento">Outras opções: {outras.slice(0, 3).map((s) => s.perfume.nome).join(', ')}</p>}
               </div>
             ) : (
               <p className="text-sm text-stone-500">Nenhum perfume combina com essa estação e ocasião. Cadastre as estações e ocasiões de cada um para melhorar as sugestões.</p>

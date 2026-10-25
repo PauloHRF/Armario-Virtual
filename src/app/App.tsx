@@ -22,9 +22,9 @@ const ICONES: Record<string, ReactNode> = {
   tamanhos: <path d="M3 9h18v6H3V9Zm4 0v3m4-3v2m4-2v3m4-3v2" />,
 }
 
-function Icone({ id }: { id: string }) {
+function Icone({ id, className = '' }: { id: string; className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className="size-6" aria-hidden {...tracos}>
+    <svg viewBox="0 0 24 24" className={`size-6 ${className}`} aria-hidden {...tracos}>
       {ICONES[id]}
     </svg>
   )
@@ -49,7 +49,7 @@ function useTema() {
 }
 
 const aba = (ativa: boolean) =>
-  `flex flex-col items-center gap-1 rounded-xl py-2 text-xs transition ${ativa ? 'font-semibold text-acento' : 'text-stone-500'}`
+  `flex flex-col items-center gap-1 rounded-xl py-2 text-xs transition ${ativa ? 'font-semibold text-acento' : 'text-stone-600'}`
 
 export default function App() {
   const [mais, setMais] = useState(false)
@@ -111,14 +111,18 @@ export default function App() {
           {principais.map((f) => (
             <li key={f.id} className="flex-1">
               <NavLink to={f.rota} onClick={() => setMais(false)} className={({ isActive }) => aba(isActive)}>
-                <Icone id={f.id} />
-                {f.nome}
+                {({ isActive }) => (
+                  <>
+                    <Icone id={f.id} className={isActive ? '' : 'text-stone-500'} />
+                    {f.nome}
+                  </>
+                )}
               </NavLink>
             </li>
           ))}
           <li className="flex-1">
             <button onClick={() => setMais(!mais)} aria-expanded={mais} className={`${aba(mais || emOutra)} w-full`}>
-              <svg viewBox="0 0 24 24" className="size-6" aria-hidden {...tracos}>
+              <svg viewBox="0 0 24 24" className={`size-6 ${mais || emOutra ? '' : 'text-stone-500'}`} aria-hidden {...tracos}>
                 <path d="M5 12h.01M12 12h.01M19 12h.01" strokeWidth={3} />
               </svg>
               Mais

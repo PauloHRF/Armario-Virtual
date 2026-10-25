@@ -79,7 +79,7 @@ export default function Packing() {
           <div className="mb-3 rounded-2xl bg-marca-50 p-4 text-center ring-1 ring-marca-200">
             <p className="text-5xl" aria-hidden>🎉</p>
             <p className="mt-2 font-display text-secao font-semibold">Mala pronta!</p>
-            <p className="text-sm text-stone-600">Tudo separado para {aberta.nome}. Boa viagem!</p>
+            <p className="text-sm text-acento">Tudo separado para {aberta.nome}. Boa viagem!</p>
           </div>
         )}
 

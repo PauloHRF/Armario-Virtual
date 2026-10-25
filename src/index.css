@@ -15,6 +15,7 @@
   --color-card: #ffffff;
   --color-fill: #12161d;
   --color-on-fill: #ffffff;
+  --color-on-fill-suave: #b4bccb;
   --color-acento: #115e59;
   --text-titulo: 1.75rem;
   --text-titulo--line-height: 2.25rem;
@@ -94,6 +95,7 @@ button {
   --color-card: #171d26;
   --color-fill: #e8ebf0;
   --color-on-fill: #12161d;
+  --color-on-fill-suave: #4d5463;
   --color-acento: #5eead4;
   --color-marca-50: #0b2220;
   --color-marca-100: #0f2f2c;

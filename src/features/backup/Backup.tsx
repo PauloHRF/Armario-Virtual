@@ -119,7 +119,7 @@ export default function Backup() {
           ) : (
             <>
               <p className="font-semibold">Importado ✓</p>
-              <ul className="mt-1 text-stone-600">
+              <ul className="mt-1 text-acento">
                 {entraram.map(([c, n]) => <li key={c}>+{n} {NOMES[c]}</li>)}
               </ul>
             </>
