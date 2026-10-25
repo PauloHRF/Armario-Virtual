@@ -10,7 +10,7 @@ const tracos = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeL
 // Ícones de traço, um por aba (chave = id da feature).
 const ICONES: Record<string, ReactNode> = {
   armario: <path d="M12 4a2 2 0 1 1 2 2c-1 .4-2 1-2 2v1M12 9 3.5 15.2a1.4 1.4 0 0 0 .8 2.5h15.4a1.4 1.4 0 0 0 .8-2.5L12 9Z" />,
-  combinacoes: <path d="m12 3 1.8 4.7L18.5 9l-4.7 1.8L12 15.5l-1.8-4.7L5.5 9l4.7-1.3L12 3Zm6 11 .8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8L18 14Z" />,
+  combinacoes: <path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5" />,
   montar: <path d="M4 20 14.5 9.5m0 0 2.5-2.5a2.1 2.1 0 0 1 3 3L17.5 12.5M14.5 9.5l3 3M4 20l3.5-.5L4.5 16.5 4 20Z" />,
   diario: <path d="M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm0 4h14M8 4v4m8-4v4" />,
   mala: <path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M5 7h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Zm4 0v12m6-12v12" />,
@@ -27,7 +27,7 @@ function Icone({ id }: { id: string }) {
 }
 
 const aba = (ativa: boolean) =>
-  `flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-xs transition ${ativa ? 'font-semibold text-sky-600' : 'text-stone-500'}`
+  `flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-xs transition ${ativa ? 'font-semibold text-sky-500' : 'text-stone-500'}`
 
 export default function App() {
   const [mais, setMais] = useState(false)
@@ -39,7 +39,7 @@ export default function App() {
   return (
     <div className="mx-auto flex min-h-dvh max-w-md flex-col">
       <header className="sticky top-0 z-10 border-b border-stone-200/70 bg-stone-50/90 px-4 py-3 backdrop-blur">
-        <p className="font-display text-base font-semibold tracking-tight">
+        <p className="font-display text-base font-semibold tracking-wide uppercase">
           Armário <span className="text-sky-500">Virtual</span>
         </p>
       </header>
@@ -52,7 +52,7 @@ export default function App() {
         </Routes>
       </main>
 
-      {mais && <button aria-label="Fechar menu" className="fixed inset-0 z-10 cursor-default bg-stone-900/20" onClick={() => setMais(false)} />}
+      {mais && <button aria-label="Fechar menu" className="fixed inset-0 z-10 cursor-default bg-black/30" onClick={() => setMais(false)} />}
       <nav className="fixed inset-x-0 bottom-0 z-20 px-3 pb-3">
         {mais && (
           <ul className="mx-auto mb-2 max-w-md rounded-2xl border border-stone-200 bg-white p-1 sombra-alta">

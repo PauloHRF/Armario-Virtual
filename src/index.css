@@ -2,17 +2,17 @@
 
 /* Paleta própria: as telas usam as classes stone-* e sky-*, então trocar aqui muda o app inteiro. */
 @theme {
-  --color-stone-50: #faf6f0;
-  --color-stone-100: #f3ece1;
-  --color-stone-200: #e8decd;
-  --color-stone-300: #d6c8b2;
-  --color-stone-400: #b3a28a;
-  --color-stone-500: #8a7a66;
-  --color-stone-600: #6b5d4c;
-  --color-stone-900: #2a2030;
-  --color-sky-500: #c8506e;
-  --color-sky-600: #ac3b58;
-  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --color-stone-50: #f4f5f7;
+  --color-stone-100: #eceef2;
+  --color-stone-200: #dde0e7;
+  --color-stone-300: #c3c8d2;
+  --color-stone-400: #9aa1af;
+  --color-stone-500: #6b7383;
+  --color-stone-600: #4d5463;
+  --color-stone-900: #12161d;
+  --color-sky-500: #0f766e;
+  --color-sky-600: #115e59;
+  --font-display: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
@@ -50,11 +50,12 @@ button {
 /* Sombras tingidas com o tom do app (nunca cinza puro sobre fundo colorido) */
 @utility sombra {
   box-shadow:
-    0 1px 2px rgb(88 48 64 / 0.06),
-    0 8px 24px -8px rgb(88 48 64 / 0.16);
+    0 1px 2px rgb(18 22 29 / 0.06),
+    0 8px 24px -8px rgb(18 22 29 / 0.16);
 }
 @utility sombra-alta {
   box-shadow:
-    0 2px 4px rgb(88 48 64 / 0.08),
-    0 16px 32px -8px rgb(88 48 64 / 0.28);
+    0 2px 4px rgb(18 22 29 / 0.08),
+    0 16px 32px -8px rgb(18 22 29 / 0.28);
 }
+
