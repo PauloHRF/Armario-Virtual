@@ -77,8 +77,8 @@ export default function Backup() {
         e use a importação para levar o armário para outro aparelho.
       </p>
 
-      <section className="rounded-2xl bg-card p-4 sombra ring-1 ring-stone-200">
-        <h2 className="font-display text-base font-semibold">O que está guardado aqui</h2>
+      <section className="rounded-2xl bg-card p-4 sombra">
+        <h2 className="font-display text-secao font-semibold">O que está guardado aqui</h2>
         {total === 0 ? (
           <p className="mt-2 text-sm text-stone-500">Nada ainda.</p>
         ) : (
@@ -113,7 +113,7 @@ export default function Backup() {
 
       {erro && <p role="alert" className="mt-4 text-sm text-red-600">{erro}</p>}
       {importado && (
-        <div role="status" className="mt-4 rounded-2xl bg-sky-500/10 p-4 text-sm ring-1 ring-sky-500/20">
+        <div role="status" className="mt-4 rounded-2xl bg-marca-50 p-4 text-sm ring-1 ring-marca-200">
           {entraram.length === 0 ? (
             <p>Nada novo no arquivo: tudo o que ele tem já está aqui.</p>
           ) : (

@@ -47,7 +47,7 @@ function Formulario({ perfume, aoSalvar, aoCancelar, aoExcluir }: {
 
   return (
     <form onSubmit={enviar} className="space-y-4">
-      <h1 className="text-[28px] leading-9 font-semibold tracking-tight">{perfume ? 'Editar perfume' : 'Novo perfume'}</h1>
+      <h1 className="text-titulo font-semibold tracking-tight">{perfume ? 'Editar perfume' : 'Novo perfume'}</h1>
       {foto && <FotoPeca foto={foto} className="mx-auto aspect-square w-40 rounded-2xl bg-stone-100 object-cover ring-1 ring-stone-200" />}
       <label className="block cursor-pointer rounded-xl bg-card p-3 text-center text-sm font-semibold ring-1 ring-stone-200">
         📷 {foto ? 'Trocar foto' : 'Adicionar foto (opcional)'}
@@ -161,14 +161,14 @@ export default function Perfumes() {
         />
       ) : (
         <>
-          <div className="space-y-3 rounded-2xl bg-card p-4 sombra ring-1 ring-stone-200">
-            <h2 className="font-display text-base font-semibold">Qual usar hoje?</h2>
+          <div className="space-y-3 rounded-2xl bg-card p-4 sombra">
+            <h2 className="font-display text-secao font-semibold">Qual usar hoje?</h2>
             <Chips titulo="Estação" opcoes={ESTACOES} valor={estacao} aoMudar={setEstacao} />
             <Chips titulo="Ocasião" opcoes={OCASIOES} valor={ocasiao} aoMudar={setOcasiao} />
             {melhor ? (
-              <div className="rounded-xl bg-sky-500/10 p-3">
+              <div className="rounded-xl bg-marca-50 p-3">
                 <p className="text-xs text-stone-600">Sugestão</p>
-                <p className="font-display text-base font-semibold">{melhor.perfume.nome}{melhor.perfume.marca && ` · ${melhor.perfume.marca}`}</p>
+                <p className="font-display text-secao font-semibold">{melhor.perfume.nome}{melhor.perfume.marca && ` · ${melhor.perfume.marca}`}</p>
                 <p className="mt-1 text-sm text-stone-600 first-letter:uppercase">{melhor.motivos.join(' · ')}</p>
                 <button onClick={() => usarHoje(melhor.perfume)} disabled={melhor.perfume.usos.includes(hoje)} className="mt-3 min-h-11 w-full rounded-xl bg-sky-500 font-semibold text-white disabled:opacity-50">
                   {melhor.perfume.usos.includes(hoje) ? 'Já usado hoje ✓' : 'Vou usar este'}
@@ -180,10 +180,10 @@ export default function Perfumes() {
             )}
           </div>
 
-          <h2 className="mt-8 mb-2 font-display text-base font-semibold">Minha coleção</h2>
+          <h2 className="mt-8 mb-2 font-display text-secao font-semibold">Minha coleção</h2>
           <ul className="grid grid-cols-2 gap-3">
             {perfumes.map((p) => (
-              <li key={p.id} className="overflow-hidden rounded-2xl bg-card sombra ring-1 ring-stone-200">
+              <li key={p.id} className="overflow-hidden rounded-2xl bg-card sombra">
                 <button onClick={() => setEditando(p)} className="block w-full text-left">
                   <div className="grid aspect-square place-items-center bg-stone-100">
                     {p.foto ? <FotoPeca foto={p.foto} className="size-full object-cover" /> : <svg viewBox="0 0 24 24" className="size-14 text-stone-400" aria-hidden fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round"><path d="M9 3h6v3H9V3Zm-2 3h10a1 1 0 0 1 1 1v3H6V7a1 1 0 0 1 1-1Zm-1 4h12v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-9Zm6 3v4" /></svg>}
@@ -205,7 +205,7 @@ export default function Perfumes() {
           </ul>
           <button
             onClick={() => setEditando('novo')}
-            className="fixed right-5 bottom-24 flex items-center gap-1.5 rounded-full bg-sky-500 px-5 py-3 font-semibold text-white sombra-alta transition active:scale-95"
+            className="fixed right-5 bottom-24 flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 font-semibold text-white sombra-alta transition active:scale-95"
           >
             <span className="text-base leading-none">+</span> Novo perfume
           </button>

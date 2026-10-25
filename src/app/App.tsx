@@ -49,7 +49,7 @@ function useTema() {
 }
 
 const aba = (ativa: boolean) =>
-  `flex flex-col items-center gap-0.5 rounded-xl py-1.5 text-xs transition ${ativa ? 'font-semibold text-acento' : 'text-stone-500'}`
+  `flex flex-col items-center gap-1 rounded-xl py-2 text-xs transition ${ativa ? 'font-semibold text-acento' : 'text-stone-500'}`
 
 export default function App() {
   const [mais, setMais] = useState(false)
@@ -62,7 +62,7 @@ export default function App() {
   return (
     <div className="mx-auto flex min-h-dvh max-w-md flex-col">
       <header className="sticky top-0 z-10 flex items-center justify-between border-b border-stone-200/70 bg-stone-50/90 py-1 pr-1 pl-4 backdrop-blur">
-        <p className="font-display text-base font-semibold tracking-wide uppercase">
+        <p className="font-display text-secao font-semibold tracking-wide uppercase">
           Armário <span className="text-acento">Virtual</span>
         </p>
         <button

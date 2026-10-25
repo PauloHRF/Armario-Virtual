@@ -131,7 +131,7 @@ export default function Outfits() {
 
       <ul className="space-y-4">
         {visiveis.map((l) => (
-          <li key={idDoLook(l)} className="rounded-2xl bg-card p-3 sombra ring-1 ring-stone-200">
+          <li key={idDoLook(l)} className="rounded-2xl bg-card p-3 sombra">
             <Fotos pecas={[l.cima, l.baixo, l.calcado]} />
             <p className="mt-2 text-sm">{l.explicacao}</p>
             <div className="mt-2 grid grid-cols-2 gap-2">
@@ -161,10 +161,10 @@ export default function Outfits() {
 
       {salvasValidas.length > 0 && (
         <>
-          <h2 className="mb-2 mt-8 font-display text-base font-semibold">Salvas</h2>
+          <h2 className="mb-2 mt-8 font-display text-secao font-semibold">Salvas</h2>
           <ul className="space-y-3">
             {salvasValidas.map(({ s, partes }) => (
-              <li key={s.id} className="rounded-2xl bg-card p-3 sombra ring-1 ring-stone-200">
+              <li key={s.id} className="rounded-2xl bg-card p-3 sombra">
                 <Fotos pecas={partes} />
                 <div className="mt-2 flex gap-4 text-sm">
                   <button onClick={() => navegar('/montar', { state: { pecaIds: s.pecaIds } })} className="font-semibold">Abrir no Montar</button>

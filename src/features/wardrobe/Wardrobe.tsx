@@ -94,7 +94,7 @@ export default function Wardrobe() {
           <button
             key={t}
             onClick={() => setExtra(extra === t ? '' : t)}
-            className={`shrink-0 rounded-full min-h-11 px-3.5 text-xs transition ${extra === t ? 'bg-sky-500 text-white' : 'bg-stone-100 text-stone-600'}`}
+            className={`shrink-0 rounded-full min-h-11 px-4 text-xs transition ${extra === t ? 'bg-sky-500 text-white' : 'bg-stone-100 text-stone-600'}`}
           >
             {t}
           </button>
@@ -125,20 +125,20 @@ export default function Wardrobe() {
           <li key={p.id}>
             <button
               onClick={() => setEditando(p)}
-              className="group relative w-full overflow-hidden rounded-2xl bg-card text-left sombra ring-1 ring-stone-200 transition active:scale-[0.98]"
+              className="group relative w-full overflow-hidden rounded-2xl bg-card text-left sombra transition active:scale-[0.98]"
             >
               <div className="aspect-4/5 bg-stone-100">
                 <FotoPeca foto={p.foto} className="size-full object-cover" />
               </div>
               {p.cuidado && (
-                <span className="absolute top-2 left-2 rounded-full bg-black/70 px-2.5 py-1 text-xs font-semibold text-white">{p.cuidado}</span>
+                <span className="absolute top-2 left-2 rounded-full bg-black/70 px-3 py-1 text-xs font-semibold text-white">{p.cuidado}</span>
               )}
               {p.favorita && (
                 <span className="absolute top-2 right-2 grid size-7 place-items-center rounded-full bg-card/90 text-acento shadow">★</span>
               )}
               <div className="p-3">
                 <p className="font-semibold capitalize">{p.categoria}</p>
-                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-stone-500">
+                <p className="mt-1 flex items-center gap-2 text-xs text-stone-500">
                   <span
                     className="size-3 shrink-0 rounded-full ring-1 ring-stone-300"
                     style={{ background: CORES.find((c) => c.nome === p.cor)?.hex }}
@@ -154,7 +154,7 @@ export default function Wardrobe() {
       {pecas.length > 0 && (
       <button
         onClick={() => setEditando('nova')}
-        className="fixed right-5 bottom-24 flex items-center gap-1.5 rounded-full bg-sky-500 px-5 py-3 font-semibold text-white sombra-alta transition active:scale-95"
+        className="fixed right-5 bottom-24 flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 font-semibold text-white sombra-alta transition active:scale-95"
       >
         <span className="text-base leading-none">+</span> Adicionar peça
       </button>
