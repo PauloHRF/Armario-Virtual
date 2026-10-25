@@ -34,7 +34,7 @@ export const serve = <T extends string>(lista: T[] | undefined, v: T | undefined
 // Todas as combinações válidas: 1 de cima + 1 de baixo + calçado,
 // mesmo estilo, no máximo uma cor forte e, se pedido, para a estação/ocasião escolhida.
 export function gerarLooks(todas: Peca[], filtro: Filtro = {}): Look[] {
-  const pecas = todas.filter((p) => serve(p.estacoes, filtro.estacao) && serve(p.ocasioes, filtro.ocasiao))
+  const pecas = todas.filter((p) => !p.cuidado && serve(p.estacoes, filtro.estacao) && serve(p.ocasioes, filtro.ocasiao))
   const cimas = pecas.filter((p) => CIMA.includes(p.categoria))
   const baixos = pecas.filter((p) => BAIXO.includes(p.categoria))
   const calcados = pecas.filter((p) => p.categoria === 'calçado')

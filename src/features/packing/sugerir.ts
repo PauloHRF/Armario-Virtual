@@ -19,7 +19,7 @@ const grupo = (p: Peca) => (p.categoria === 'camiseta' || p.categoria === 'camis
 
 // Favoritas primeiro, depois cores neutras (combinam entre si); o resto, em ordem aleatória.
 export function sugerirMala(pecas: Peca[], dias: number, estacao?: Estacao): string[] {
-  const usaveis = pecas.filter((p) => serve(p.estacoes, estacao))
+  const usaveis = pecas.filter((p) => !p.cuidado && serve(p.estacoes, estacao))
   const q = quantidades(dias, estacao)
   const ids: string[] = []
   for (const [g, n] of Object.entries(q)) {
