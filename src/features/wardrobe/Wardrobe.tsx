@@ -49,7 +49,7 @@ export default function Wardrobe() {
           aoCancelar={() => setEditando(null)}
         />
         {editando !== 'nova' && (
-          <button onClick={() => remover(editando)} className="mt-4 w-full rounded-xl border border-red-200 p-3 text-red-600">
+          <button onClick={() => remover(editando)} className="mt-4 w-full rounded-xl border border-perigo/30 p-3 text-perigo">
             Remover peça
           </button>
         )}
@@ -71,7 +71,7 @@ export default function Wardrobe() {
         <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-on-fill/10 text-xl" aria-hidden>📖</span>
         <span className="min-w-0 flex-1">
           <span className="block font-semibold">Guias de estilo</span>
-          <span className="block text-sm text-on-fill/70">Barba, cores e como combinar</span>
+          <span className="block text-sm text-on-fill-suave">Barba, cores e como combinar</span>
         </span>
         <span aria-hidden>›</span>
       </Link>
@@ -82,7 +82,7 @@ export default function Wardrobe() {
           <button
             key={c}
             onClick={() => setFiltro(c)}
-            className={`shrink-0 rounded-full border min-h-11 px-4 text-sm capitalize transition ${filtro === c ? 'border-fill bg-fill text-on-fill' : 'border-stone-200 bg-card text-stone-600'}`}
+            className={`shrink-0 rounded-full min-h-11 px-4 text-sm capitalize transition ${filtro === c ? 'bg-fill text-on-fill' : 'bg-stone-100 text-stone-600'}`}
           >
             {c}
           </button>

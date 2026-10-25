@@ -9,6 +9,13 @@ import Aviso from '../../shared/Aviso'
 import { exportarPng } from './exportar'
 
 const FUNDOS = ['#ffffff', '#e5e7eb', '#cbd5e1', '#bfdbfe', '#bbf7d0', '#334155', '#0b0f14']
+// No tema escuro o quadro novo já começa num cinza-azulado, em vez de um quadrado branco brilhando na tela
+const fundoPadrao = () => (document.documentElement.dataset.tema === 'escuro' ? FUNDOS[5] : FUNDOS[0])
+// Fundo claro pede texto escuro e vice-versa (o quadro tem a cor escolhida, independente do tema)
+const fundoClaro = (hex: string) => {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))
+  return (r * 299 + g * 587 + b * 114) / 1000 > 140
+}
 const limitar = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v))
 
 export default function Studio() {
@@ -16,7 +23,7 @@ export default function Studio() {
   const [looks, setLooks] = useState<LookMontado[]>([])
   const [id, setId] = useState<string>(() => crypto.randomUUID())
   const [nome, setNome] = useState('')
-  const [fundo, setFundo] = useState(FUNDOS[0])
+  const [fundo, setFundo] = useState(fundoPadrao)
   const [camadas, setCamadas] = useState<Camada[]>([])
   const [sel, setSel] = useState<string | null>(null)
   const quadro = useRef<HTMLDivElement>(null)
@@ -147,7 +154,7 @@ export default function Studio() {
   function novo() {
     setId(crypto.randomUUID())
     setNome('')
-    setFundo(FUNDOS[0])
+    setFundo(fundoPadrao())
     setCamadas([])
     setSel(null)
   }
@@ -210,7 +217,7 @@ export default function Studio() {
           )
         })}
         {visiveis.length === 0 && (
-          <p className="absolute inset-0 grid place-items-center p-6 text-center text-sm text-stone-500">
+          <p className="absolute inset-0 grid place-items-center p-6 text-center text-sm" style={{ color: fundoClaro(fundo) ? '#4d5463' : '#cbd2dd' }}>
             Toque em uma peça abaixo para colocá-la no quadro.
           </p>
         )}
@@ -245,7 +252,7 @@ export default function Studio() {
             <button onClick={() => alterar(atual.id, { espelho: !atual.espelho })} className="rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0">Espelhar</button>
             <button onClick={paraTras} className="rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0">Para trás</button>
             <button onClick={duplicar} className="rounded-xl bg-card min-h-11 px-4 ring-1 ring-stone-200 border-0">Duplicar</button>
-            <button onClick={remover} className="rounded-xl bg-card min-h-11 px-4 text-red-700 ring-1 ring-red-200">Remover</button>
+            <button onClick={remover} className="rounded-xl bg-card min-h-11 px-4 text-perigo ring-1 ring-perigo/30">Remover</button>
           </div>
         </div>
       )}
@@ -306,7 +313,7 @@ export default function Studio() {
                     await removerLook(l.id)
                     await carregar()
                   }}
-                  className="text-red-700"
+                  className="text-perigo"
                 >
                   Excluir
                 </button>

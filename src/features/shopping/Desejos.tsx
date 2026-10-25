@@ -119,12 +119,12 @@ function Formulario({ desejo, aoSalvar, aoCancelar, aoExcluir }: {
         <input type="checkbox" checked={urgente} onChange={(e) => setUrgente(e.target.checked)} />
         Quero muito (aparece primeiro)
       </label>
-      {erro && <p className="text-sm text-red-600">{erro}</p>}
+      {erro && <p className="text-sm text-perigo">{erro}</p>}
       <div className="grid grid-cols-2 gap-2">
         <button type="button" onClick={aoCancelar} className="min-h-12 rounded-2xl bg-card font-semibold ring-1 ring-stone-200">Cancelar</button>
         <button type="submit" className="min-h-12 rounded-2xl bg-sky-500 font-semibold text-white">Salvar</button>
       </div>
-      {aoExcluir && <button type="button" onClick={aoExcluir} className="min-h-12 w-full rounded-2xl border border-red-200 text-red-600">Remover da lista</button>}
+      {aoExcluir && <button type="button" onClick={aoExcluir} className="min-h-12 w-full rounded-2xl border border-perigo/30 text-perigo">Remover da lista</button>}
     </form>
   )
 }

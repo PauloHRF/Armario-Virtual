@@ -138,7 +138,7 @@ export default function Outfits() {
               <button
                 onClick={() => salvar(l)}
                 disabled={ehSalvo(l)}
-                className="min-h-11 rounded-xl bg-card p-2 text-sm font-semibold ring-1 ring-stone-200 disabled:text-stone-400"
+                className="min-h-11 rounded-xl bg-card p-2 text-sm font-semibold ring-1 ring-stone-200 disabled:text-stone-500"
               >
                 {ehSalvo(l) ? 'Salva ✓' : 'Salvar'}
               </button>
@@ -168,7 +168,7 @@ export default function Outfits() {
                 <Fotos pecas={partes} />
                 <div className="mt-2 flex gap-4 text-sm">
                   <button onClick={() => navegar('/montar', { state: { pecaIds: s.pecaIds } })} className="font-semibold">Abrir no Montar</button>
-                  <button onClick={() => remover(s.id)} className="text-red-600">Remover</button>
+                  <button onClick={() => remover(s.id)} className="text-perigo">Remover</button>
                 </div>
               </li>
             ))}

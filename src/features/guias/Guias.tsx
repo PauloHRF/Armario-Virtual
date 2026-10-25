@@ -110,7 +110,7 @@ export default function Guias() {
                 <span className="block font-semibold">{g.titulo}</span>
                 <span className="block text-sm text-stone-600">{g.resumo}</span>
               </span>
-              <span className="text-stone-400" aria-hidden>›</span>
+              <span className="text-stone-500" aria-hidden>›</span>
             </Link>
           </li>
         ))}

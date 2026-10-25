@@ -134,7 +134,7 @@ export default function Diary() {
             </ul>
           )}
           <div className="mt-3 flex gap-2 text-sm">
-            {diario[dia] && <button onClick={() => escolher(null)} className="rounded-xl min-h-11 px-4 text-red-700 ring-1 ring-red-200">Limpar dia</button>}
+            {diario[dia] && <button onClick={() => escolher(null)} className="rounded-xl min-h-11 px-4 text-perigo ring-1 ring-perigo/30">Limpar dia</button>}
             <button onClick={() => setDia(null)} className="rounded-xl min-h-11 px-4 ring-1 ring-stone-200">Fechar</button>
           </div>
         </div>
