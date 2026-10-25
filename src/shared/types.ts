@@ -43,6 +43,9 @@ export type Peca = {
   estacoes?: Estacao[]
   ocasioes?: Ocasiao[]
   favorita?: boolean
+  preco?: number // valor pago, em reais
+  cuidado?: Cuidado // se tem valor, a peça está fora de uso até ficar pronta
+  subtipo?: Subtipo // só para acessórios
   cadastradaEm: string // ISO
 }
 
@@ -98,4 +101,43 @@ export type Viagem = {
   pecaIds: string[] // peças planejadas para a mala
   empacotadas: string[] // as que já estão na mala
   criadaEm: string
+}
+
+export const NOTAS = ['cítrico', 'aromático', 'amadeirado', 'especiado', 'aquático', 'doce', 'couro', 'baunilha'] as const
+export const INTENSIDADES = ['suave', 'moderado', 'forte'] as const
+export type Nota = (typeof NOTAS)[number]
+export type Intensidade = (typeof INTENSIDADES)[number]
+
+export type Perfume = {
+  id: string
+  nome: string
+  marca: string
+  foto?: Blob
+  notas: Nota[]
+  intensidade: Intensidade
+  estacoes: Estacao[]
+  ocasioes: Ocasiao[]
+  favorito: boolean
+  usos: string[] // dias (AAAA-MM-DD) em que foi usado
+}
+
+export const CUIDADOS_ROUPA = ['lavar', 'passar', 'costurar'] as const
+export const CUIDADOS_CALCADO = ['engraxar', 'impermeabilizar', 'sapateiro'] as const
+export const SUBTIPOS = ['relógio', 'óculos', 'cinto', 'gravata', 'boné', 'mochila', 'carteira'] as const
+export type Cuidado = (typeof CUIDADOS_ROUPA)[number] | (typeof CUIDADOS_CALCADO)[number]
+export type Subtipo = (typeof SUBTIPOS)[number]
+
+export const cuidadosDe = (c: Categoria): readonly Cuidado[] => (c === 'calçado' ? CUIDADOS_CALCADO : CUIDADOS_ROUPA)
+
+export type Desejo = {
+  id: string
+  nome: string
+  categoria: Categoria
+  cor: Cor
+  foto: Blob
+  marca: string
+  preco?: number
+  link?: string
+  urgente: boolean // "quero muito": aparece primeiro
+  criadoEm: string
 }
