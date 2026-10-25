@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { features } from '../features'
+import { GuiaPagina } from '../features/guias/Guias'
 
 // Abas principais na barra; o resto fica em "Mais", para o menu não ficar carregado.
 const PRINCIPAIS = ['armario', 'combinacoes', 'montar', 'diario']
@@ -15,6 +16,7 @@ const ICONES: Record<string, ReactNode> = {
   diario: <path d="M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm0 4h14M8 4v4m8-4v4" />,
   mala: <path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M5 7h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Zm4 0v12m6-12v12" />,
   perfumes: <path d="M9 3h6v3H9V3Zm-2 3h10a1 1 0 0 1 1 1v3H6V7a1 1 0 0 1 1-1Zm-1 4h12v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-9Zm6 3v4" />,
+  guias: <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v15H5.5A1.5 1.5 0 0 0 4 20.5v-15ZM20 5.5A1.5 1.5 0 0 0 18.5 4H13v15h5.5a1.5 1.5 0 0 1 1.5 1.5v-15Z" />,
   comprar: <path d="M6 8h12l-1 12H7L6 8Zm3 0V7a3 3 0 0 1 6 0v1" />,
   tamanhos: <path d="M3 9h18v6H3V9Zm4 0v3m4-3v2m4-2v3m4-3v2" />,
 }
@@ -54,7 +56,7 @@ export default function App() {
   const { pathname } = useLocation()
   const principais = features.filter((f) => PRINCIPAIS.includes(f.id))
   const outras = features.filter((f) => !PRINCIPAIS.includes(f.id))
-  const emOutra = outras.some((f) => pathname.endsWith(f.rota))
+  const emOutra = outras.some((f) => pathname.includes(f.rota))
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-md flex-col">
@@ -82,6 +84,7 @@ export default function App() {
           {features.map((f) => (
             <Route key={f.id} path={f.rota} element={<f.componente />} />
           ))}
+          <Route path="/guias/:id" element={<GuiaPagina />} />
         </Routes>
       </main>
 

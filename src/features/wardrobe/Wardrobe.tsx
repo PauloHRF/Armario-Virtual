@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Tela from '../../shared/Tela'
 import { listarPecas, removerPeca, salvarPeca } from '../../shared/storage'
 import { CATEGORIAS, CORES, ESTACOES, OCASIOES, type Categoria, type Peca } from '../../shared/types'
@@ -63,6 +64,17 @@ export default function Wardrobe() {
 
   return (
     <Tela titulo="Meu armário">
+      <Link
+        to="/guias"
+        className="mb-4 flex min-h-16 items-center gap-3 rounded-2xl bg-fill p-4 text-on-fill sombra-alta transition active:scale-[0.98]"
+      >
+        <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-on-fill/10 text-xl" aria-hidden>📖</span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold">Guias de estilo</span>
+          <span className="block text-sm text-on-fill/70">Barba, cores e como combinar</span>
+        </span>
+        <span aria-hidden>›</span>
+      </Link>
       {pecas.length > 0 && (
         <>
       <div className="sem-barra -mx-4 mb-3 flex gap-2 overflow-x-auto px-4 pb-1">
