@@ -1,5 +1,5 @@
 import { get, set } from 'idb-keyval'
-import type { Combinacao, LookMontado, Medidas, Peca, TamanhoMarca, Viagem } from './types'
+import type { Combinacao, Desejo, LookMontado, Medidas, Peca, Perfume, TamanhoMarca, Viagem } from './types'
 
 const CHAVE_PECAS = 'pecas'
 
@@ -101,4 +101,40 @@ export async function salvarViagem(viagem: Viagem): Promise<void> {
 
 export async function removerViagem(id: string): Promise<void> {
   await set(CHAVE_VIAGENS, (await listarViagens()).filter((v) => v.id !== id))
+}
+
+const CHAVE_PERFUMES = 'perfumes'
+
+export async function listarPerfumes(): Promise<Perfume[]> {
+  return (await get<Perfume[]>(CHAVE_PERFUMES)) ?? []
+}
+
+export async function salvarPerfume(perfume: Perfume): Promise<void> {
+  const todos = await listarPerfumes()
+  const i = todos.findIndex((p) => p.id === perfume.id)
+  if (i >= 0) todos[i] = perfume
+  else todos.push(perfume)
+  await set(CHAVE_PERFUMES, todos)
+}
+
+export async function removerPerfume(id: string): Promise<void> {
+  await set(CHAVE_PERFUMES, (await listarPerfumes()).filter((p) => p.id !== id))
+}
+
+const CHAVE_DESEJOS = 'desejos'
+
+export async function listarDesejos(): Promise<Desejo[]> {
+  return (await get<Desejo[]>(CHAVE_DESEJOS)) ?? []
+}
+
+export async function salvarDesejo(desejo: Desejo): Promise<void> {
+  const todos = await listarDesejos()
+  const i = todos.findIndex((d) => d.id === desejo.id)
+  if (i >= 0) todos[i] = desejo
+  else todos.push(desejo)
+  await set(CHAVE_DESEJOS, todos)
+}
+
+export async function removerDesejo(id: string): Promise<void> {
+  await set(CHAVE_DESEJOS, (await listarDesejos()).filter((d) => d.id !== id))
 }

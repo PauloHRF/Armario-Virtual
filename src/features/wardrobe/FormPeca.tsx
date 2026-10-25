@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import {
-  CATEGORIAS, CORES, ESTACOES, ESTAMPAS, ESTILOS, MATERIAIS, OCASIOES,
-  type Categoria, type Cor, type Estacao, type Estampa, type Estilo, type Material, type Ocasiao, type Peca,
+  CATEGORIAS, CORES, ESTACOES, ESTAMPAS, ESTILOS, MATERIAIS, OCASIOES, SUBTIPOS, cuidadosDe,
+  type Categoria, type Cor, type Cuidado, type Subtipo, type Estacao, type Estampa, type Estilo, type Material, type Ocasiao, type Peca,
 } from '../../shared/types'
 import Chips from '../../shared/Chips'
 import { reduzirFoto } from './reduzirFoto'
@@ -29,6 +29,8 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
   const [estacoes, setEstacoes] = useState<Estacao[]>(peca?.estacoes ?? [])
   const [ocasioes, setOcasioes] = useState<Ocasiao[]>(peca?.ocasioes ?? [])
   const [favorita, setFavorita] = useState(peca?.favorita ?? false)
+  const [cuidado, setCuidado] = useState<Cuidado[]>(peca?.cuidado ? [peca.cuidado] : [])
+  const [subtipo, setSubtipo] = useState<Subtipo[]>(peca?.subtipo ? [peca.subtipo] : [])
   const [erro, setErro] = useState('')
   const [salvando, setSalvando] = useState(false)
   const [original, setOriginal] = useState<Blob | null>(null) // foto antes do recorte, para desfazer
@@ -86,6 +88,9 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
         estacoes,
         ocasioes,
         favorita,
+        preco: peca?.preco,
+        cuidado: cuidado.find((c) => cuidadosDe(categoria).includes(c)),
+        subtipo: categoria === 'acessório' ? subtipo[0] : undefined,
         cadastradaEm: peca?.cadastradaEm ?? new Date().toISOString(),
       })
     } catch {
@@ -108,22 +113,22 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
             <FotoPeca foto={foto} className={`size-full ${original ? 'object-contain' : 'object-cover'}`} />
           </div>
           {original ? (
-            <button type="button" onClick={() => (setFoto(original), setOriginal(null))} className="w-full rounded-xl bg-white p-3 text-sm font-semibold ring-1 ring-stone-200">
+            <button type="button" onClick={() => (setFoto(original), setOriginal(null))} className="w-full rounded-xl bg-card p-3 text-sm font-semibold ring-1 ring-stone-200">
               ↩ Voltar à foto original
             </button>
           ) : (
-            <button type="button" onClick={tirarFundo} disabled={recorte !== null} className="w-full rounded-xl bg-white p-3 text-sm font-semibold ring-1 ring-stone-200 disabled:opacity-60">
+            <button type="button" onClick={tirarFundo} disabled={recorte !== null} className="w-full rounded-xl bg-card p-3 text-sm font-semibold ring-1 ring-stone-200 disabled:opacity-60">
               {recorte === null ? '✂️ Remover fundo' : `Recortando… ${Math.round(recorte * 100)}%`}
             </button>
           )}
         </div>
       )}
       <div className="grid grid-cols-2 gap-2">
-        <label className="cursor-pointer rounded-xl bg-stone-900 p-3 text-center text-sm font-semibold text-white">
+        <label className="cursor-pointer rounded-xl bg-fill p-3 text-center text-sm font-semibold text-on-fill">
           📷 Tirar foto
           <input type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => escolherFoto(e.target.files?.[0])} />
         </label>
-        <label className="cursor-pointer rounded-xl bg-white p-3 text-center text-sm font-semibold ring-1 ring-stone-200">
+        <label className="cursor-pointer rounded-xl bg-card p-3 text-center text-sm font-semibold ring-1 ring-stone-200">
           🖼️ Galeria
           <input type="file" accept="image/*" className="hidden" onChange={(e) => escolherFoto(e.target.files?.[0])} />
         </label>
@@ -148,7 +153,7 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
               aria-pressed={cor === c.nome}
               onClick={() => setCor(c.nome)}
               style={{ backgroundColor: c.hex }}
-              className={`h-9 w-9 rounded-full border ${cor === c.nome ? 'ring-2 ring-stone-900 ring-offset-2' : 'border-stone-300'}`}
+              className={`h-9 w-9 rounded-full border ${cor === c.nome ? 'ring-2 ring-fill ring-offset-2 ring-offset-stone-50' : 'border-stone-300'}`}
             />
           ))}
         </div>
@@ -162,10 +167,15 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
         </select>
       </label>
 
+      {categoria === 'acessório' && <Chips titulo="Tipo de acessório" opcoes={SUBTIPOS} valor={subtipo} aoMudar={setSubtipo} />}
       <Chips titulo="Estampa" opcoes={ESTAMPAS} valor={estampa} aoMudar={setEstampa} />
       <Chips titulo="Material" opcoes={MATERIAIS} valor={material} aoMudar={setMaterial} />
       <Chips titulo="Estações" opcoes={ESTACOES} valor={estacoes} aoMudar={setEstacoes} multiplo />
       <Chips titulo="Ocasiões" opcoes={OCASIOES} valor={ocasioes} aoMudar={setOcasioes} multiplo />
+
+      <div className="rounded-2xl bg-stone-100 p-3">
+        <Chips titulo="Precisa de cuidado? (sai das sugestões até ficar pronta)" opcoes={cuidadosDe(categoria)} valor={cuidado} aoMudar={setCuidado} />
+      </div>
 
       <label className="flex items-center gap-2 text-sm">
         <input type="checkbox" checked={favorita} onChange={(e) => setFavorita(e.target.checked)} />
@@ -186,7 +196,7 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
       {erro && <p className="text-sm text-red-600">{erro}</p>}
 
       <div className="grid grid-cols-2 gap-2">
-        <button type="button" onClick={aoCancelar} className="rounded-xl bg-white p-3 font-semibold ring-1 ring-stone-200">Cancelar</button>
+        <button type="button" onClick={aoCancelar} className="rounded-xl bg-card p-3 font-semibold ring-1 ring-stone-200">Cancelar</button>
         <button type="submit" disabled={salvando} className="rounded-xl bg-sky-500 p-3 font-semibold text-white disabled:opacity-50">Salvar</button>
       </div>
     </form>

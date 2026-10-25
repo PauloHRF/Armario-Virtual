@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Tela from '../../shared/Tela'
 import { listarPecas, removerPeca, salvarPeca } from '../../shared/storage'
 import { CATEGORIAS, CORES, ESTACOES, OCASIOES, type Categoria, type Peca } from '../../shared/types'
@@ -58,11 +59,22 @@ export default function Wardrobe() {
 
   const combinaExtra = (p: Peca) =>
     !extra ||
-    (extra === '★' ? !!p.favorita : [...(p.estacoes ?? []), ...(p.ocasioes ?? [])].some((t) => t === extra))
+    (extra === '★' ? !!p.favorita : extra === 'em cuidado' ? !!p.cuidado : [...(p.estacoes ?? []), ...(p.ocasioes ?? [])].some((t) => t === extra))
   const visiveis = pecas.filter((p) => (filtro === 'todas' || p.categoria === filtro) && combinaExtra(p))
 
   return (
     <Tela titulo="Meu armário">
+      <Link
+        to="/guias"
+        className="mb-4 flex min-h-16 items-center gap-3 rounded-2xl bg-fill p-4 text-on-fill sombra-alta transition active:scale-[0.98]"
+      >
+        <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-on-fill/10 text-xl" aria-hidden>📖</span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold">Guias de estilo</span>
+          <span className="block text-sm text-on-fill/70">Barba, cores e como combinar</span>
+        </span>
+        <span aria-hidden>›</span>
+      </Link>
       {pecas.length > 0 && (
         <>
       <div className="sem-barra -mx-4 mb-3 flex gap-2 overflow-x-auto px-4 pb-1">
@@ -70,7 +82,7 @@ export default function Wardrobe() {
           <button
             key={c}
             onClick={() => setFiltro(c)}
-            className={`shrink-0 rounded-full border min-h-11 px-4 text-sm capitalize transition ${filtro === c ? 'border-stone-900 bg-stone-900 text-white' : 'border-stone-200 bg-white text-stone-600'}`}
+            className={`shrink-0 rounded-full border min-h-11 px-4 text-sm capitalize transition ${filtro === c ? 'border-fill bg-fill text-on-fill' : 'border-stone-200 bg-card text-stone-600'}`}
           >
             {c}
           </button>
@@ -78,7 +90,7 @@ export default function Wardrobe() {
       </div>
 
       <div className="sem-barra -mx-4 mb-3 flex gap-2 overflow-x-auto px-4 pb-1">
-        {(['★', ...ESTACOES, ...OCASIOES] as const).map((t) => (
+        {(['★', 'em cuidado', ...ESTACOES, ...OCASIOES] as const).map((t) => (
           <button
             key={t}
             onClick={() => setExtra(extra === t ? '' : t)}
@@ -93,7 +105,7 @@ export default function Wardrobe() {
 
       {carregou && pecas.length === 0 && (
         <Vazio
-          emoji="👗"
+          emoji="👕"
           titulo="Seu armário está vazio"
           texto="Fotografe sua primeira peça. Com 6 peças já dá para receber sugestões de looks."
           acao={
@@ -106,20 +118,23 @@ export default function Wardrobe() {
       {pecas.length > 0 && visiveis.length === 0 && (
         <Vazio emoji="🔍" titulo="Nada por aqui" texto="Nenhuma peça combina com esses filtros. Tire um filtro para ver o resto." />
       )}
-      <Aviso mensagem="Peça adicionada ao armário ✨" chave={avisos} />
+      <Aviso mensagem="Peça adicionada ao armário ✓" chave={avisos} />
 
       <ul className="grid grid-cols-2 gap-3">
         {visiveis.map((p) => (
           <li key={p.id}>
             <button
               onClick={() => setEditando(p)}
-              className="group relative w-full overflow-hidden rounded-2xl bg-white text-left sombra ring-1 ring-stone-200 transition active:scale-[0.98]"
+              className="group relative w-full overflow-hidden rounded-2xl bg-card text-left sombra ring-1 ring-stone-200 transition active:scale-[0.98]"
             >
               <div className="aspect-4/5 bg-stone-100">
                 <FotoPeca foto={p.foto} className="size-full object-cover" />
               </div>
+              {p.cuidado && (
+                <span className="absolute top-2 left-2 rounded-full bg-black/70 px-2.5 py-1 text-xs font-semibold text-white">{p.cuidado}</span>
+              )}
               {p.favorita && (
-                <span className="absolute top-2 right-2 grid size-7 place-items-center rounded-full bg-white/90 text-sky-500 shadow">★</span>
+                <span className="absolute top-2 right-2 grid size-7 place-items-center rounded-full bg-card/90 text-acento shadow">★</span>
               )}
               <div className="p-3">
                 <p className="font-semibold capitalize">{p.categoria}</p>
@@ -128,7 +143,7 @@ export default function Wardrobe() {
                     className="size-3 shrink-0 rounded-full ring-1 ring-stone-300"
                     style={{ background: CORES.find((c) => c.nome === p.cor)?.hex }}
                   />
-                  <span className="truncate">{[p.cor, p.estampa, p.material, p.marca].filter(Boolean).join(' · ')}</span>
+                  <span className="truncate">{[p.subtipo, p.cor, p.estampa, p.material, p.marca].filter(Boolean).join(' · ')}</span>
                 </p>
               </div>
             </button>
