@@ -96,7 +96,7 @@ export default function Sizes() {
                 setSalvo(false)
               }}
               aria-label="Remover"
-              className="px-2 text-red-600"
+              className="px-2 text-perigo"
             >
               ✕
             </button>
@@ -136,7 +136,7 @@ export default function Sizes() {
           )
         })}
       </ul>
-      <p className="mt-3 text-xs text-stone-400">Tabelas de demonstração: os valores são aproximados e ilustrativos.</p>
+      <p className="mt-3 text-xs text-stone-500">Tabelas de demonstração: os valores são aproximados e ilustrativos.</p>
     </Tela>
   )
 }

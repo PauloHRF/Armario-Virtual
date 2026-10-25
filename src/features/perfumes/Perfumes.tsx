@@ -77,13 +77,13 @@ function Formulario({ perfume, aoSalvar, aoCancelar, aoExcluir }: {
         <input type="checkbox" checked={favorito} onChange={(e) => setFavorito(e.target.checked)} />
         ★ Perfume favorito
       </label>
-      {erro && <p className="text-sm text-red-600">{erro}</p>}
+      {erro && <p className="text-sm text-perigo">{erro}</p>}
       <div className="grid grid-cols-2 gap-2">
         <button type="button" onClick={aoCancelar} className="min-h-12 rounded-2xl bg-card font-semibold ring-1 ring-stone-200">Cancelar</button>
         <button type="submit" className="min-h-12 rounded-2xl bg-sky-500 font-semibold text-white">Salvar</button>
       </div>
       {aoExcluir && (
-        <button type="button" onClick={aoExcluir} className="min-h-12 w-full rounded-2xl border border-red-200 text-red-600">Excluir perfume</button>
+        <button type="button" onClick={aoExcluir} className="min-h-12 w-full rounded-2xl border border-perigo/30 text-perigo">Excluir perfume</button>
       )}
     </form>
   )
@@ -186,7 +186,7 @@ export default function Perfumes() {
               <li key={p.id} className="overflow-hidden rounded-2xl bg-card sombra">
                 <button onClick={() => setEditando(p)} className="block w-full text-left">
                   <div className="grid aspect-square place-items-center bg-stone-100">
-                    {p.foto ? <FotoPeca foto={p.foto} className="size-full object-cover" /> : <svg viewBox="0 0 24 24" className="size-14 text-stone-400" aria-hidden fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round"><path d="M9 3h6v3H9V3Zm-2 3h10a1 1 0 0 1 1 1v3H6V7a1 1 0 0 1 1-1Zm-1 4h12v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-9Zm6 3v4" /></svg>}
+                    {p.foto ? <FotoPeca foto={p.foto} className="size-full object-cover" /> : <svg viewBox="0 0 24 24" className="size-14 text-stone-500" aria-hidden fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round"><path d="M9 3h6v3H9V3Zm-2 3h10a1 1 0 0 1 1 1v3H6V7a1 1 0 0 1 1-1Zm-1 4h12v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-9Zm6 3v4" /></svg>}
                   </div>
                   <div className="p-3">
                     <p className="font-semibold">{p.favorito && '★ '}{p.nome}</p>
@@ -197,7 +197,7 @@ export default function Perfumes() {
                     </p>
                   </div>
                 </button>
-                <button onClick={() => usarHoje(p)} disabled={p.usos.includes(hoje)} className="min-h-11 w-full border-t border-stone-200 text-sm font-semibold text-acento disabled:text-stone-400">
+                <button onClick={() => usarHoje(p)} disabled={p.usos.includes(hoje)} className="min-h-11 w-full border-t border-stone-200 text-sm font-semibold text-acento disabled:text-stone-500">
                   {p.usos.includes(hoje) ? 'Usado hoje ✓' : 'Usei hoje'}
                 </button>
               </li>

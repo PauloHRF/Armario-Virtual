@@ -49,7 +49,7 @@ export default function Wardrobe() {
           aoCancelar={() => setEditando(null)}
         />
         {editando !== 'nova' && (
-          <button onClick={() => remover(editando)} className="mt-4 w-full rounded-xl border border-red-200 p-3 text-red-600">
+          <button onClick={() => remover(editando)} className="mt-4 w-full rounded-xl border border-perigo/30 p-3 text-perigo">
             Remover peça
           </button>
         )}

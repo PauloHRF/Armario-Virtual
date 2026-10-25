@@ -111,7 +111,7 @@ export default function Backup() {
       </label>
       <p className="mt-2 text-xs text-stone-500">A importação não apaga nada: entra só o que ainda não existe aqui.</p>
 
-      {erro && <p role="alert" className="mt-4 text-sm text-red-600">{erro}</p>}
+      {erro && <p role="alert" className="mt-4 text-sm text-perigo">{erro}</p>}
       {importado && (
         <div role="status" className="mt-4 rounded-2xl bg-marca-50 p-4 text-sm ring-1 ring-marca-200">
           {entraram.length === 0 ? (

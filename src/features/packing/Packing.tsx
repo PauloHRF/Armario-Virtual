@@ -135,7 +135,7 @@ export default function Packing() {
             setAbertaId(null)
             await carregar()
           }}
-          className="mt-6 w-full rounded-xl border border-red-200 p-3 text-sm text-red-600"
+          className="mt-6 w-full rounded-xl border border-perigo/30 p-3 text-sm text-perigo"
         >
           Excluir viagem
         </button>

@@ -193,7 +193,7 @@ export default function FormPeca({ peca, aoSalvar, aoCancelar }: Props) {
         </label>
       </div>
 
-      {erro && <p className="text-sm text-red-600">{erro}</p>}
+      {erro && <p className="text-sm text-perigo">{erro}</p>}
 
       <div className="grid grid-cols-2 gap-2">
         <button type="button" onClick={aoCancelar} className="rounded-xl bg-card p-3 font-semibold ring-1 ring-stone-200">Cancelar</button>

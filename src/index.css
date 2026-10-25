@@ -17,6 +17,7 @@
   --color-on-fill: #ffffff;
   --color-on-fill-suave: #b4bccb;
   --color-acento: #115e59;
+  --color-perigo: #b91c1c;
   --text-titulo: 1.75rem;
   --text-titulo--line-height: 2.25rem;
   --text-secao: 1.125rem;
@@ -97,6 +98,7 @@ button {
   --color-on-fill: #12161d;
   --color-on-fill-suave: #4d5463;
   --color-acento: #5eead4;
+  --color-perigo: #f87171;
   --color-marca-50: #0b2220;
   --color-marca-100: #0f2f2c;
   --color-marca-200: #134e4a;
