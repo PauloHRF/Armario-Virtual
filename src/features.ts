@@ -4,6 +4,7 @@ import Outfits from './features/outfits/Outfits'
 import Studio from './features/studio/Studio'
 import Diary from './features/diary/Diary'
 import Packing from './features/packing/Packing'
+import Perfumes from './features/perfumes/Perfumes'
 import Shopping from './features/shopping/Shopping'
 import Sizes from './features/sizes/Sizes'
 
@@ -22,6 +23,7 @@ export const features: Feature[] = [
   { id: 'montar', nome: 'Montar', rota: '/montar', icone: '🎨', componente: Studio },
   { id: 'diario', nome: 'Diário', rota: '/diario', icone: '📅', componente: Diary },
   { id: 'mala', nome: 'Mala', rota: '/mala', icone: '🧳', componente: Packing },
+  { id: 'perfumes', nome: 'Perfumes', rota: '/perfumes', icone: '🧴', componente: Perfumes },
   { id: 'comprar', nome: 'Comprar', rota: '/comprar', icone: '🛍️', componente: Shopping },
   { id: 'tamanhos', nome: 'Tamanhos', rota: '/tamanhos', icone: '📏', componente: Sizes },
 ]
