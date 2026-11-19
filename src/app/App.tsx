@@ -61,7 +61,7 @@ export default function App() {
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-md flex-col">
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-stone-200/70 bg-stone-50/90 py-1 pr-1 pl-4 backdrop-blur">
+      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-stone-200/70 bg-stone-50/90 pr-1 pb-1 pl-4 pt-[calc(0.25rem+env(safe-area-inset-top))] backdrop-blur">
         <p className="font-display text-secao font-semibold tracking-wide uppercase">
           Armário <span className="text-acento">Virtual</span>
         </p>
@@ -79,7 +79,7 @@ export default function App() {
           </svg>
         </button>
       </header>
-      <main className="flex-1 p-4 pb-28">
+      <main className="flex-1 pt-4 pr-[max(1rem,env(safe-area-inset-right))] pb-[calc(7rem+env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))]">
         <Routes>
           <Route path="/" element={<Navigate to={features[0].rota} replace />} />
           {features.map((f) => (
@@ -90,9 +90,9 @@ export default function App() {
       </main>
 
       {mais && <button aria-label="Fechar menu" className="fixed inset-0 z-10 cursor-default bg-black/30" onClick={() => setMais(false)} />}
-      <nav className="fixed inset-x-0 bottom-0 z-20 px-3 pb-3">
+      <nav className="fixed inset-x-0 bottom-0 z-20 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
         {mais && (
-          <ul className="mx-auto mb-2 max-w-md rounded-2xl border border-stone-200 bg-card p-1 sombra-alta">
+          <ul className="mx-auto mb-2 max-h-[calc(100dvh-6rem-env(safe-area-inset-top)-env(safe-area-inset-bottom))] max-w-md overflow-y-auto rounded-2xl border border-stone-200 bg-card p-1 sombra-alta">
             {outras.map((f) => (
               <li key={f.id}>
                 <NavLink

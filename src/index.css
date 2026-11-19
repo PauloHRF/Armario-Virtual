@@ -56,6 +56,13 @@ input[type="range"],
 input[type="checkbox"] {
   accent-color: var(--color-sky-500);
 }
+@media (pointer: coarse) {
+  select,
+  input:not([type="checkbox"]):not([type="range"]) {
+    font-size: max(16px, 1rem);
+  }
+}
+
 button {
   cursor: pointer;
 }
