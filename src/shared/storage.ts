@@ -1,4 +1,4 @@
-import { get, set } from 'idb-keyval'
+import { get, set } from './bancoLocal'
 import type { Combinacao, Desejo, LookMontado, Medidas, Peca, Perfume, TamanhoMarca, Viagem } from './types'
 
 const CHAVE_PECAS = 'pecas'
