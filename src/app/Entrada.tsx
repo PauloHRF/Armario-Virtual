@@ -1,23 +1,12 @@
-import { AuthClient, type Session } from '@supabase/auth-js'
+import type { Session } from '@supabase/auth-js'
 import { useEffect, useState } from 'react'
 import { selecionarConta } from '../shared/bancoLocal'
 import App from './App'
 
-const url = import.meta.env.VITE_SUPABASE_URL?.trim()
-const chave = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim()
+import { cliente } from '../shared/supabase'
+
 const retorno = new URL(import.meta.env.BASE_URL, window.location.origin).href
 const paginasAntigas = location.hostname === 'paulohrf.github.io' && import.meta.env.BASE_URL === '/Armario-Virtual/'
-const cliente = url?.startsWith('https://') && chave?.startsWith('sb_publishable_')
-  ? new AuthClient({
-      url: url.replace(/\/$/, '') + '/auth/v1',
-      headers: { apikey: chave },
-      storageKey: 'armario-auth-' + new URL(url).hostname,
-      flowType: 'pkce',
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-    })
-  : null
 
 const params = new URLSearchParams(location.search)
 const retornoComErro = params.has('error') || new URLSearchParams(location.hash.slice(1)).has('error')
@@ -84,7 +73,7 @@ export default function Entrada() {
       <h1 className="font-display text-titulo font-semibold">Armário Virtual</h1>
       {cliente ? (
         <>
-          <p>Entre para abrir seu armário neste aparelho.</p>
+          <p>Entre para acessar as peças da sua conta.</p>
           <button type="button" onClick={entrar} disabled={ocupado} className="min-h-12 rounded-xl bg-fill px-4 font-semibold text-on-fill disabled:opacity-50">
             {ocupado ? 'Abrindo o Google…' : 'Entrar com Google'}
           </button>

@@ -1,6 +1,11 @@
 import { get, set } from './bancoLocal'
 
-// Tudo o que o app guarda no aparelho. Se uma função nova guardar dados, a chave entra aqui.
+import { listarPecas, salvarPeca } from './storage'
+import { cliente } from './supabase'
+import { salvarNuvem } from './pecasNuvem'
+import type { Peca } from './types'
+
+// Coleções incluídas no backup. Se uma função nova guardar dados, a chave entra aqui.
 export const CHAVES = [
   'pecas',
   'combinacoes',
@@ -47,10 +52,14 @@ async function decodificar(v: unknown): Promise<unknown> {
   return v
 }
 
+export function lerColecao(chave: typeof CHAVES[number]) {
+  return chave === 'pecas' ? listarPecas() : get(chave)
+}
+
 export async function exportarTudo(): Promise<Blob> {
   const dados: Cru = {}
   for (const chave of CHAVES) {
-    const valor = await get(chave)
+    const valor = await lerColecao(chave)
     if (valor !== undefined) dados[chave] = await codificar(valor)
   }
   const arquivo = { app: 'armario-virtual', versao: VERSAO, exportadoEm: new Date().toISOString(), dados }
@@ -81,14 +90,27 @@ export async function importarArquivo(texto: string): Promise<Resumo> {
     const entrada = arquivo.dados[chave]
     if (entrada === undefined) continue
     const novo = await decodificar(entrada)
-    const atual = await get(chave)
+    const atual = await lerColecao(chave)
     if (ehLista(novo)) {
       const lista = ehLista(atual) ? atual : []
       const ids = new Set(lista.map((i) => i?.id))
       const entram = novo.filter((i) => ehObjeto(i) && typeof i.id === 'string' && !ids.has(i.id))
-      if (entram.length) await set(chave, [...lista, ...entram])
+      if (chave === 'pecas') {
+        let total = 0
+        for (const item of entram) {
+          if (!(item.foto instanceof Blob) || !item.categoria || !item.cadastradaEm) throw new Error('Peça inválida no backup.')
+          if (cliente) {
+            if (await salvarNuvem(item as Peca, true)) total++
+          } else {
+            await salvarPeca(item as Peca)
+            total++
+          }
+        }
+        resumo[chave] = total
+        continue
+      } else if (entram.length) await set(chave, [...lista, ...entram])
       resumo[chave] = entram.length
-    } else if (ehObjeto(novo)) {
+    } else if (chave !== 'pecas' && ehObjeto(novo)) {
       const base = ehObjeto(atual) ? atual : {}
       const entram = Object.keys(novo).filter((k) => !(k in base))
       if (entram.length) await set(chave, { ...novo, ...base })

@@ -1,13 +1,20 @@
 import { get, set } from './bancoLocal'
+import { cliente } from './supabase'
+import { listarNuvem, removerNuvem, salvarNuvem } from './pecasNuvem'
 import type { Combinacao, Desejo, LookMontado, Medidas, Peca, Perfume, TamanhoMarca, Viagem } from './types'
 
 const CHAVE_PECAS = 'pecas'
 
 export async function listarPecas(): Promise<Peca[]> {
+  if (cliente) return listarNuvem()
   return (await get<Peca[]>(CHAVE_PECAS)) ?? []
 }
 
 export async function salvarPeca(peca: Peca): Promise<void> {
+  if (cliente) {
+    await salvarNuvem(peca)
+    return
+  }
   const pecas = await listarPecas()
   const i = pecas.findIndex((p) => p.id === peca.id)
   if (i >= 0) pecas[i] = peca
@@ -16,6 +23,7 @@ export async function salvarPeca(peca: Peca): Promise<void> {
 }
 
 export async function removerPeca(id: string): Promise<void> {
+  if (cliente) return removerNuvem(id)
   const pecas = await listarPecas()
   await set(CHAVE_PECAS, pecas.filter((p) => p.id !== id))
 }

@@ -36,11 +36,16 @@ export default function Wardrobe() {
   const { rascunho, carregando, erro: erroRascunho, guardar, concluir } = useRascunho<RascunhoPeca>('rascunho-peca')
 
   async function recarregar() {
-    setPecas(await listarPecas())
-    setCarregou(true)
+    setErro('')
+    try {
+      setPecas(await listarPecas())
+      setCarregou(true)
+    } catch {
+      setErro('Não consegui carregar as peças. Confira sua conexão e tente novamente.')
+    }
   }
   useEffect(() => {
-    recarregar().catch(() => setErro('Não consegui carregar as peças deste aparelho.'))
+    void recarregar()
   }, [])
 
   async function salvar(peca: Peca) {
@@ -119,6 +124,8 @@ export default function Wardrobe() {
 
   return (
     <Tela titulo="Meu armário">
+      {!carregou && !erro && <p role="status" className="mb-3 text-sm">Carregando peças…</p>}
+      {!carregou && erro && <button onClick={recarregar} className={botaoSecundario}>Tentar novamente</button>}
       {(erroRascunho || erro) && <p role="alert" className="mb-3 text-sm text-perigo">{erro || erroRascunho}</p>}
       {rascunho && !carregando && (
         <button onClick={() => abrir(rascunho)} className="mb-4 min-h-11 w-full rounded-xl bg-fill px-3 font-semibold text-on-fill">
