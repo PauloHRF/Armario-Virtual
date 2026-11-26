@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { get } from 'idb-keyval'
+import { get } from '../../shared/bancoLocal'
 import Tela from '../../shared/Tela'
 import Aviso from '../../shared/Aviso'
 import { CHAVES, exportarTudo, importarArquivo, type Resumo } from '../../shared/backup'

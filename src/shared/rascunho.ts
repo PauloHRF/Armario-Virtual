@@ -1,4 +1,4 @@
-import { del, get, set, update } from 'idb-keyval'
+import { del, get, set, update } from './bancoLocal'
 import { useEffect, useState } from 'react'
 
 type Registro<T> = { versao: string; dados: T }

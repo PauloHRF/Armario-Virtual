@@ -1,4 +1,4 @@
-import { get, set } from 'idb-keyval'
+import { get, set } from './bancoLocal'
 
 // Tudo o que o app guarda no aparelho. Se uma função nova guardar dados, a chave entra aqui.
 export const CHAVES = [

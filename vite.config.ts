@@ -3,6 +3,6 @@ import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/Armario-Virtual/',
+  base: process.env.VERCEL ? '/' : '/Armario-Virtual/',
   plugins: [react(), tailwindcss()],
 })

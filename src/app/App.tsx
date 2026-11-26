@@ -51,7 +51,9 @@ function useTema() {
 const aba = (ativa: boolean) =>
   `flex flex-col items-center gap-1 rounded-xl py-2 text-xs transition ${ativa ? 'font-semibold text-acento' : 'text-stone-600'}`
 
-export default function App() {
+type Conta = { email?: string; sair: () => void; ocupado: boolean; erro: string }
+
+export default function App({ conta }: { conta?: Conta }) {
   const [mais, setMais] = useState(false)
   const [tema, setTema] = useTema()
   const { pathname } = useLocation()
@@ -93,6 +95,13 @@ export default function App() {
       <nav className="fixed inset-x-0 bottom-0 z-20 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
         {mais && (
           <ul className="mx-auto mb-2 max-h-[calc(100dvh-6rem-env(safe-area-inset-top)-env(safe-area-inset-bottom))] max-w-md overflow-y-auto rounded-2xl border border-stone-200 bg-card p-1 sombra-alta">
+            {conta && (
+              <li className="border-b border-stone-200 p-2">
+                {conta.email && <p className="break-all px-2 text-sm text-stone-600">{conta.email}</p>}
+                <button onClick={conta.sair} disabled={conta.ocupado} className="min-h-11 px-2 font-semibold text-acento">Sair da conta</button>
+                {conta.erro && <p role="alert" className="text-sm text-perigo">{conta.erro}</p>}
+              </li>
+            )}
             {outras.map((f) => (
               <li key={f.id}>
                 <NavLink
