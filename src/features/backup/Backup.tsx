@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { get } from '../../shared/bancoLocal'
+import { cliente } from '../../shared/supabase'
 import Tela from '../../shared/Tela'
 import Aviso from '../../shared/Aviso'
-import { CHAVES, exportarTudo, importarArquivo, type Resumo } from '../../shared/backup'
+import { CHAVES, lerColecao, exportarTudo, importarArquivo, type Resumo } from '../../shared/backup'
 
 const NOMES: Record<string, string> = {
   pecas: 'peças',
@@ -27,11 +27,11 @@ export default function Backup() {
 
   async function contar() {
     const c: Resumo = {}
-    for (const chave of CHAVES) c[chave] = quantos(await get(chave))
+    for (const chave of CHAVES) c[chave] = quantos(await lerColecao(chave))
     setContagem(c)
   }
   useEffect(() => {
-    contar()
+    contar().catch(() => setErro('Não consegui carregar os dados para o backup.'))
   }, [])
 
   async function exportar() {
@@ -73,8 +73,7 @@ export default function Backup() {
   return (
     <Tela titulo="Backup">
       <p className="mb-4 text-sm text-stone-600">
-        Seus dados ficam só neste aparelho. Se você limpar os dados do navegador, tudo some. Exporte um arquivo de vez em quando
-        e use a importação para levar o armário para outro aparelho.
+        {cliente ? 'As peças e suas fotos ficam na sua conta. Os demais itens ficam neste aparelho.' : 'Seus dados ficam neste aparelho. Exporte um backup para guardar uma cópia.'}
       </p>
 
       <section className="rounded-2xl bg-card p-4 sombra">

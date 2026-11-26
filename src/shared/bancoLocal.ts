@@ -4,6 +4,8 @@ import { createStore, del as apagar, get as ler, set as gravar, update as atuali
 let banco: UseStore | undefined
 let dono: string | undefined
 
+export const contaSelecionada = () => dono
+
 export function selecionarConta(id: string) {
   if (dono === id) return
   if (dono !== undefined) throw new Error('Reabra a página para mudar de conta.')
